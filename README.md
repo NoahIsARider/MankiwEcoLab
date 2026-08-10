@@ -50,7 +50,7 @@
 ## 📂 项目结构
 
 ```
-mankiw-economics/
+mankiwecolab/
 ├── main.py                    # CLI 入口 (完整模拟 / 宏观演示 / 十大原理)
 ├── config.py                  # 全部可调参数
 ├── experiments.py             # 8 个经典经济学实验

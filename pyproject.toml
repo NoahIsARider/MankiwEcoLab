@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mankiw-economics"
-version = "2.0.0"
+name = "mankiwecolab"
+version = "2.0.1"
 description = "曼昆《经济学原理》代码学习项目 - 微观与宏观经济模型的 Python 实现"
 readme = "README.md"
 requires-python = ">=3.9"
