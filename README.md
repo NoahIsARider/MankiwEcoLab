@@ -84,6 +84,43 @@ mankiwecolab/
 
 ## 🚀 快速开始
 
+### 通过 PyPI 安装（推荐）
+
+```bash
+pip install mankiwecolab
+```
+
+> 国内镜像（腾讯云/清华等）对新包有同步延迟，装不上时可临时指定官方源：
+>
+> ```bash
+> pip install -i https://pypi.org/simple mankiwecolab
+> ```
+
+安装后即可使用命令行工具：
+
+```bash
+mankiw-econ --help          # 查看全部命令
+mankiw-econ                 # 完整微观市场模拟
+mankiw-econ --macro         # 宏观经济学模型演示
+mankiw-econ --demo          # 曼昆十大原理演示
+mankiw-econ --experiments   # 运行全部经济学实验
+```
+
+也可以从 [GitHub Releases](https://github.com/NoahIsARider/MankiwEcoLab/releases) 下载 `.whl` 文件安装：
+
+```bash
+pip install ./mankiwecolab-2.0.1-py3-none-any.whl
+```
+
+### 源码运行（开发模式）
+
+```bash
+git clone https://github.com/NoahIsARider/MankiwEcoLab.git
+cd MankiwEcoLab
+pip install -r requirements.txt
+python main.py
+```
+
 ### 安装依赖
 
 ```bash
