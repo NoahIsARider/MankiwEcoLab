@@ -12,111 +12,109 @@
   <img src="https://img.shields.io/badge/PRs-welcome-orange?style=flat-square" alt="PRs Welcome"/>
 </p>
 
-# 经济学原理模拟系统 (Mankiw Economics Lab)
+# Mankiw Economics Lab (Principles of Economics Simulation System)
 
-> **基于曼昆《经济学原理》的交互式代码学习项目** —— 用 Python 亲手实现微观经济学与宏观经济学的每一个核心模型。
+> **An interactive, code-first learning project based on Mankiw's *Principles of Economics*** — implement every core model of microeconomics and macroeconomics by hand in Python.
 
-本项目把曼昆《经济学原理》教材中从"生产可能性边界"到"菲利普斯曲线"的经典模型，
-**逐一翻译为可运行、可实验、可测试的 Python 代码**。你不再只是阅读课本上的图形与公式，
-而是可以运行代码、调整参数、观察市场如何收敛、经济如何波动。
+This project takes the classic models in Mankiw's *Principles of Economics* textbook — from the "production possibilities frontier" to the "Phillips curve" — and **turns each one into runnable, experimentable, testable Python code**. Instead of just reading the graphs and formulas in a textbook, you can run the code, tweak parameters, and watch how markets converge and how the economy fluctuates.
 
 ---
 
-## ✨ 特性亮点
+## ✨ Highlights
 
-- **覆盖曼昆十大经济学原理** —— 每个原理都有对应的可运行实验
-- **微观 + 宏观全体系** —— 从供给需求均衡到索洛增长模型，一网打尽
-- **双入口 CLI** —— `--macro` 与 `--demo` 一键演示宏观模型与十大原理
-- **204 个单元与集成测试** —— 每个经济模型都有数学验证，保证正确性
-- **完整可视化** —— 供需曲线、价格收敛、索洛收敛路径、AD-AS 均衡、菲利普斯曲线……
-- **确定性可复现** —— 固定随机种子，实验结果精确可复现
-- **教学友好** —— 中文注释 + 逐行公式推导 + 数学验证测试
+- **Covers Mankiw's ten principles of economics** — every principle has a corresponding runnable experiment
+- **Complete micro + macro system** — from supply-demand equilibrium to the Solow growth model, all covered
+- **Dual-entry CLI** — `--macro` and `--demo` demo the macro models and the ten principles with one command
+- **204 unit and integration tests** — every economic model is mathematically verified for correctness
+- **Full visualization** — supply/demand curves, price convergence, Solow convergence paths, AD-AS equilibrium, Phillips curve…
+- **Deterministic and reproducible** — fixed random seeds make experimental results exactly reproducible
+- **Teaching-friendly** — Chinese comments + line-by-line formula derivations + mathematical verification tests
 
 ---
 
-## 📚 十大原理 × 代码实现
+## 📚 Ten Principles × Code Implementations
 
-| 原理 | 经济学概念 | 代码位置 |
+| Principle | Economic Concept | Code Location |
 |------|-----------|---------|
-| 1. 人们面临权衡取舍 | 生产可能性边界 PPF | `micro/ppf.py` |
-| 2. 机会成本 | 边际转换率 MRT | `micro/ppf.py` |
-| 3. 理性人考虑边际量 | 边际效用最大化 | `agents/consumer.py` |
-| 4. 人们会对激励做出反应 | 税收/补贴/价格管制 | `utils/economics.py` |
-| 5. 贸易能使每个人状况更好 | 比较优势与贸易收益 | `micro/trade.py` |
-| 6. 市场通常是组织经济的好方法 | 供需均衡与市场效率 | `market/market.py` |
-| 7. 政府有时可以改善市场结果 | 外部性与庇古税 | `micro/externality.py` |
-| 8. 生活水平取决于生产能力 | GDP 核算与索洛增长 | `macro/gdp.py`, `macro/solow.py` |
-| 9. 过多货币导致物价上升 | 货币数量论 MV=PY | `macro/inflation.py` |
-| 10. 通胀与失业的短期权衡 | 菲利普斯曲线 | `macro/phillips.py` |
+| 1. People face trade-offs | Production possibilities frontier (PPF) | `micro/ppf.py` |
+| 2. The cost of something is what you give up to get it | Marginal rate of transformation (MRT) | `micro/ppf.py` |
+| 3. Rational people think at the margin | Marginal utility maximization | `agents/consumer.py` |
+| 4. People respond to incentives | Taxes / subsidies / price controls | `utils/economics.py` |
+| 5. Trade can make everyone better off | Comparative advantage and gains from trade | `micro/trade.py` |
+| 6. Markets are usually a good way to organize economic activity | Supply-demand equilibrium and market efficiency | `market/market.py` |
+| 7. Governments can sometimes improve market outcomes | Externalities and Pigouvian taxes | `micro/externality.py` |
+| 8. A country's standard of living depends on its ability to produce goods and services | GDP accounting and Solow growth | `macro/gdp.py`, `macro/solow.py` |
+| 9. Prices rise when the government prints too much money | Quantity theory of money MV=PY | `macro/inflation.py` |
+| 10. Society faces a short-run trade-off between inflation and unemployment | Phillips curve | `macro/phillips.py` |
 
 ---
 
-## 📂 项目结构
+## 📂 Project Structure
 
 ```
 mankiwecolab/
-├── main.py                    # CLI 入口 (完整模拟 / 宏观演示 / 十大原理)
-├── config.py                  # 全部可调参数
-├── experiments.py             # 8 个经典经济学实验
-├── agents/                    # 微观主体
-│   ├── consumer.py            #   消费者: 效用函数 + 需求
-│   └── producer.py            #   生产者: 成本函数 + 供给
-├── market/                    # 市场机制
-│   ├── market.py              #   供需聚合 + 价格发现 + 市场出清
-│   └── equilibrium.py         #   均衡求解 + 剩余 + 弹性
-├── micro/                     # 微观经济学模块
-│   ├── ppf.py                 #   生产可能性边界
-│   ├── trade.py               #   比较优势与贸易
-│   ├── externality.py         #   外部性与庇古税
-│   └── market_structure.py    #   完全竞争/寡头/垄断
-├── macro/                     # 宏观经济学模块
-│   ├── gdp.py                 #   GDP 核算与平减指数
-│   ├── inflation.py           #   CPI 与货币数量论
-│   ├── unemployment.py        #   失业率与自然失业率
-│   ├── solow.py               #   索洛增长模型
-│   ├── money.py               #   货币创造与乘数
-│   ├── ad_as.py               #   总需求-总供给模型
-│   └── phillips.py            #   菲利普斯曲线
-├── utils/                     # 工具函数
-│   ├── economics.py           #   基尼系数、福利分析、政策干预
-│   └── visualization.py       #   微观/宏观可视化
-├── tests/                     # 204 个单元与集成测试
-└── output/                    # 运行生成的图表与 CSV 数据
+├── main.py                    # CLI entry (full simulation / macro demo / ten principles)
+├── config.py                  # All tunable parameters
+├── experiments.py             # 8 classic economics experiments
+├── agents/                    # Microeconomic agents
+│   ├── consumer.py            #   Consumer: utility function + demand
+│   └── producer.py            #   Producer: cost function + supply
+├── market/                    # Market mechanisms
+│   ├── market.py              #   Supply-demand aggregation + price discovery + market clearing
+│   └── equilibrium.py         #   Equilibrium solving + surplus + elasticity
+├── micro/                     # Microeconomics modules
+│   ├── ppf.py                 #   Production possibilities frontier
+│   ├── trade.py               #   Comparative advantage and trade
+│   ├── externality.py         #   Externalities and Pigouvian taxes
+│   └── market_structure.py    #   Perfect competition / oligopoly / monopoly
+├── macro/                     # Macroeconomics modules
+│   ├── gdp.py                 #   GDP accounting and deflator
+│   ├── inflation.py           #   CPI and the quantity theory of money
+│   ├── unemployment.py        #   Unemployment rate and natural rate of unemployment
+│   ├── solow.py               #   Solow growth model
+│   ├── money.py               #   Money creation and multiplier
+│   ├── ad_as.py               #   Aggregate demand – aggregate supply model
+│   └── phillips.py            #   Phillips curve
+├── utils/                     # Utility functions
+│   ├── economics.py           #   Gini coefficient, welfare analysis, policy interventions
+│   └── visualization.py       #   Micro/macro visualization
+├── tests/                     # 204 unit and integration tests
+└── output/                    # Charts and CSV data generated at runtime
 ```
 
 ---
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 通过 PyPI 安装（推荐）
+### Install from PyPI (recommended)
 
 ```bash
 pip install mankiwecolab
 ```
 
-> 国内镜像（腾讯云/清华等）对新包有同步延迟，装不上时可临时指定官方源：
+> Domestic mirrors (Tencent Cloud, Tsinghua, etc.) may have a sync delay for new packages. If installation fails, temporarily use the official index:
 >
 > ```bash
 > pip install -i https://pypi.org/simple mankiwecolab
 > ```
 
-安装后即可使用命令行工具：
+After installation, use the command-line tool:
 
 ```bash
-mankiw-econ --help          # 查看全部命令
-mankiw-econ                 # 完整微观市场模拟
-mankiw-econ --macro         # 宏观经济学模型演示
-mankiw-econ --demo          # 曼昆十大原理演示
-mankiw-econ --experiments   # 运行全部经济学实验
+mankiw-econ --help          # View all commands
+mankiw-econ                 # Full microeconomic market simulation
+mankiw-econ --macro         # Macroeconomics model demo
+mankiw-econ --demo          # Mankiw's ten principles demo
+mankiw-econ --experiments   # Run all economics experiments
 ```
 
-也可以从 [GitHub Releases](https://github.com/NoahIsARider/MankiwEcoLab/releases) 下载 `.whl` 文件安装：
+You can also download the `.whl` file from [GitHub Releases](https://github.com/NoahIsARider/MankiwEcoLab/releases) and install it:
 
 ```bash
 pip install ./mankiwecolab-2.0.1-py3-none-any.whl
 ```
 
-### 源码运行（开发模式）
+### Run from Source (development mode)
 
 ```bash
 git clone https://github.com/NoahIsARider/MankiwEcoLab.git
@@ -125,47 +123,47 @@ pip install -r requirements.txt
 python main.py
 ```
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 运行完整市场模拟
+### Run the Full Market Simulation
 
 ```bash
 python main.py
 ```
 
-运行 1000 个消费者与 200 个生产者的市场，观察价格如何逐步收敛到均衡。
+Simulates a market with 1,000 consumers and 200 producers; observe how prices gradually converge to equilibrium.
 
-### 运行宏观经济学模型演示
+### Run the Macroeconomics Model Demo
 
 ```bash
 python main.py --macro
 ```
 
-依次演示 GDP 核算、CPI、失业、索洛增长、货币创造、AD-AS 模型与菲利普斯曲线。
+Walks through GDP accounting, CPI, unemployment, Solow growth, money creation, the AD-AS model, and the Phillips curve in sequence.
 
-### 运行曼昆十大原理演示
+### Run Mankiw's Ten Principles Demo
 
 ```bash
 python main.py --demo
 ```
 
-### 运行全部经济学实验
+### Run All Economics Experiments
 
 ```bash
 python experiments.py
 ```
 
-或：
+or:
 
 ```bash
 python main.py --experiments
 ```
 
-### 运行测试
+### Run the Tests
 
 ```bash
 pip install pytest
@@ -174,57 +172,57 @@ pytest tests/
 
 ---
 
-## 🖼️ 可视化示例
+## 🖼️ Visualization Examples
 
-> 运行 `python main.py` 后，以下图表会生成到 `output/` 目录。
+> After running `python main.py`, the following charts are generated in the `output/` directory.
 
-| 微观市场模拟 | 宏观模型演示 |
+| Microeconomic market simulation | Macroeconomic model demos |
 |-------------|-------------|
-| 供需曲线与市场均衡 | 索洛增长收敛路径 |
-| 价格收敛过程 | AD-AS 模型均衡 |
-| 市场剩余分配 | 菲利普斯曲线 |
-| 福利分配分析 | 货币创造过程 |
+| Supply/demand curves and market equilibrium | Solow growth convergence paths |
+| Price convergence process | AD-AS model equilibrium |
+| Market surplus distribution | Phillips curve |
+| Welfare distribution analysis | Money creation process |
 
-所有图表均支持中文标注，详细文档见 [docs/](docs/)。
+All charts support Chinese labels; see [docs/](docs/) for detailed documentation.
 
 ---
 
-## 📖 详细文档
+## 📖 Documentation
 
-| 文档 | 说明 |
+| Document | Description |
 |------|------|
-| [USAGE.md](USAGE.md) | 使用指南与自定义实验 |
-| [STRUCTURE.md](STRUCTURE.md) | 架构与模块说明 |
-| [docs/tutorials/](docs/tutorials/) | 十大原理分步教程 |
-| [docs/models.md](docs/models.md) | 全部数学模型与公式推导 |
-| [docs/api.md](docs/api.md) | API 参考 |
-| [VERIFICATION.md](VERIFICATION.md) | 系统验收报告（全量验证） |
+| [USAGE.md](USAGE.md) | Usage guide and custom experiments |
+| [STRUCTURE.md](STRUCTURE.md) | Architecture and module descriptions |
+| [docs/tutorials/](docs/tutorials/) | Step-by-step tutorials for the ten principles |
+| [docs/models.md](docs/models.md) | All mathematical models and formula derivations |
+| [docs/api.md](docs/api.md) | API reference |
+| [VERIFICATION.md](VERIFICATION.md) | System acceptance report (full verification) |
 
 ---
 
-## 🧪 质量保证
+## 🧪 Quality Assurance
 
-本项目通过 **204 个自动化测试** 验证每个经济模型：
+This project verifies every economic model with **204 automated tests**:
 
-- **数学正确性测试**：边际效用 = 效用函数导数、稳态投资 = 持平投资、黄金律 f'(k) = δ+n……
-- **经济规律测试**：需求随价格下降、供给随价格上升、垄断价格高于竞争价格……
-- **确定性测试**：相同随机种子产生完全相同的实验结果
-- **集成测试**：完整模拟流程与所有可视化生成
+- **Mathematical correctness tests**: marginal utility = derivative of the utility function, steady-state investment = break-even investment, golden rule f'(k) = δ+n…
+- **Economic law tests**: demand falls as price rises, supply rises as price rises, monopoly prices are higher than competitive prices…
+- **Determinism tests**: identical random seeds produce exactly identical experimental results
+- **Integration tests**: complete simulation flows and generation of all visualizations
 
-运行 `pytest tests/` 即可复现全部测试。
+Run `pytest tests/` to reproduce all tests.
 
 ---
 
-## 🤝 贡献指南
+## 🤝 Contributing
 
-欢迎任何形式的贡献！
+Any form of contribution is welcome!
 
-1. **新增经济学模型**：在 `micro/` 或 `macro/` 下新建模块，并配套测试
-2. **改进可视化**：为 `utils/visualization.py` 添加更直观的图表
-3. **完善教程**：在 `docs/tutorials/` 下撰写教学文档
-4. **修复问题**：提交 issue 或 pull request
+1. **Add new economic models**: create a new module under `micro/` or `macro/` with accompanying tests
+2. **Improve visualization**: add more intuitive charts to `utils/visualization.py`
+3. **Improve tutorials**: write teaching documentation under `docs/tutorials/`
+4. **Fix issues**: submit an issue or pull request
 
-请确保提交前运行 `pytest tests/` 全部通过。
+Please make sure `pytest tests/` passes before submitting.
 
 ---
 
@@ -234,10 +232,10 @@ pytest tests/
 
 ---
 
-## 📚 参考资料
+## 📚 References
 
-- 曼昆《经济学原理：微观经济学分册》(第8版)
-- 曼昆《经济学原理：宏观经济学分册》(第8版)
+- Mankiw, *Principles of Microeconomics* (8th edition)
+- Mankiw, *Principles of Macroeconomics* (8th edition)
 - Romer, *Advanced Macroeconomics*
 - Varian, *Intermediate Microeconomics*
 
