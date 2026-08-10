@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/曼昆经济学原理-Code%20Lab-2ea44f?style=for-the-badge&logo=bookstack&logoColor=white" alt="Mankiw Economics Lab"/>
+  <img src="https://img.shields.io/badge/MankiwEcoLab-Code%20Lab-2ea44f?style=for-the-badge&logo=bookstack&logoColor=white" alt="Mankiw Economics Lab"/>
 </p>
 
 <p align="center">
