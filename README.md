@@ -5,7 +5,6 @@
 <p align="center">
   <img src="https://img.shields.io/github/stars/NoahIsARider/PrinciplesOfEconomics?style=flat-square&label=Stars&color=yellow" alt="GitHub Stars"/>
   <img src="https://img.shields.io/github/license/NoahIsARider/PrinciplesOfEconomics?style=flat-square&color=blue" alt="License"/>
-  <img src="https://img.shields.io/pypi/pyversions/PrinciplesOfEconomics?style=flat-square&color=green" alt="Python Versions"/>
   <img src="https://img.shields.io/badge/pytest-204%20passed-brightgreen?style=flat-square" alt="Tests"/>
   <img src="https://img.shields.io/badge/coverage-comprehensive-brightgreen?style=flat-square" alt="Coverage"/>
   <img src="https://img.shields.io/badge/PRs-welcome-orange?style=flat-square" alt="PRs Welcome"/>
