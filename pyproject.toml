@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mankiw-economics"
+version = "2.0.0"
+description = "曼昆《经济学原理》代码学习项目 - 微观与宏观经济模型的 Python 实现"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Mankiw Economics Lab" }]
+keywords = ["economics", "mankiw", "microeconomics", "macroeconomics", "education", "simulation"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy>=1.24.0",
+    "matplotlib>=3.7.0",
+    "pandas>=2.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+mankiw-econ = "main:main"
+
+[tool.setuptools]
+py-modules = ["main", "config", "experiments"]
+
+[tool.setuptools.packages.find]
+include = ["agents*", "market*", "utils*", "micro*", "macro*", "tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = [
+    "E501",  # 行过长: 项目含中文教学注释
+    "W293",  # 空行空白: 已有代码风格保留
+]

@@ -3,214 +3,164 @@
 ```
 PrinciplesOfEconomy/
 │
-├── README.md                    # 项目说明文档
-├── USAGE.md                     # 详细使用指南
-├── requirements.txt             # Python依赖包列表
-├── config.py                    # 配置文件（所有参数）
-├── main.py                      # 主程序入口
-├── experiments.py               # 经济学实验示例
-├── .gitignore                   # Git忽略文件
+├── README.md                    # 项目概览与徽章
+├── USAGE.md                     # 使用指南
+├── STRUCTURE.md                 # 本文档（项目结构）
+├── requirements.txt             # Python 依赖包列表
+├── pyproject.toml               # 包配置（ruff、pytest、setuptools）
+├── LICENSE                      # MIT 许可证
+├── .gitignore                   # Git 忽略文件
+├── config.py                    # 全部可配置参数
+├── main.py                      # CLI 入口（微观/宏观/十大原理）
+├── experiments.py               # 8 个经济学实验
 │
-├── agents/                      # 经济主体模块
-│   ├── __init__.py             # 模块初始化
-│   ├── consumer.py             # 消费者类
-│   └── producer.py             # 生产者类
+├── agents/                      # 微观经济主体
+│   ├── __init__.py
+│   ├── consumer.py              # Consumer 类（效用/需求）
+│   └── producer.py              # Producer 类（成本/供给）
 │
-├── market/                      # 市场机制模块
-│   ├── __init__.py             # 模块初始化
-│   ├── market.py               # 市场类
-│   └── equilibrium.py          # 均衡计算
+├── market/                      # 市场机制
+│   ├── __init__.py
+│   ├── market.py                # Market 类（价格发现/出清）
+│   └── equilibrium.py           # 均衡/剩余/弹性/DWL
+│
+├── micro/                       # 微观扩展模型
+│   ├── __init__.py
+│   ├── ppf.py                   # 生产可能性边界
+│   ├── trade.py                 # 比较优势与贸易
+│   ├── externality.py           # 外部性与庇古税
+│   └── market_structure.py      # 完全竞争/垄断/寡头
+│
+├── macro/                       # 宏观经济模型
+│   ├── __init__.py
+│   ├── gdp.py                   # GDP 核算与平减指数
+│   ├── inflation.py             # CPI、通胀率、货币数量论
+│   ├── unemployment.py          # 失业率/劳动力参与率
+│   ├── solow.py                 # 索洛增长模型
+│   ├── money.py                 # 货币创造与乘数
+│   ├── ad_as.py                 # AD-AS 模型
+│   └── phillips.py              # 菲利普斯曲线
 │
 ├── utils/                       # 工具模块
-│   ├── __init__.py             # 模块初始化
-│   ├── economics.py            # 经济学工具函数
-│   └── visualization.py        # 可视化工具
+│   ├── __init__.py
+│   ├── economics.py             # 基尼系数/税收均衡/政策模拟
+│   └── visualization.py         # EconomicsVisualizer + MacroVisualizer
 │
-└── output/                      # 输出目录（运行后自动创建）
-    ├── market_data.csv         # 市场数据
-    ├── consumer_data.csv       # 消费者数据
-    ├── producer_data.csv       # 生产者数据
-    ├── summary.csv             # 统计摘要
-    └── *.png                   # 各种图表
+├── tests/                       # 测试套件（204 个测试）
+│   ├── test_consumer.py
+│   ├── test_producer.py
+│   ├── test_market.py
+│   ├── test_equilibrium.py
+│   ├── test_micro.py
+│   ├── test_macro.py
+│   └── test_integration.py
+│
+├── docs/                        # 文档
+│   ├── index.md                 # 文档索引
+│   ├── models.md                # 数学模型与推导
+│   ├── api.md                   # API 参考
+│   └── tutorials/               # 分主题教程（5 篇）
+│
+└── output/                      # 运行后自动生成
+    ├── market_data.csv
+    ├── consumer_data.csv
+    ├── producer_data.csv
+    ├── summary.csv
+    └── *.png                    # 微观与宏观图表
 ```
 
 ## 模块说明
 
-### 核心模块
+### agents/ - 经济主体
+- **consumer.py**: 效用函数 `U=α·ln(q+1)-β·q²`，解析求解需求，支付意愿与剩余
+- **producer.py**: 成本函数 `TC=FC+a·q+0.5·b·q²`，`MC=p` 供给，关闭条件
 
-#### agents/ - 经济主体
-- **consumer.py**: 实现消费者类，包含效用函数、预算约束、需求计算等
-- **producer.py**: 实现生产者类，包含成本函数、利润最大化、供给计算等
+### market/ - 市场机制
+- **market.py**: tâtonnement 价格调整、市场出清、均衡检验
+- **equilibrium.py**: `find_equilibrium`、解析剩余、弹性分类、无谓损失、HHI、市场结构判定
 
-#### market/ - 市场机制
-- **market.py**: 实现市场类，包含价格发现、市场出清、均衡检验等
-- **equilibrium.py**: 均衡计算函数，包括消费者剩余、生产者剩余、弹性等
+### micro/ - 微观扩展
+- **ppf.py**: 资源约束下生产边界、机会成本、MRT
+- **trade.py**: 绝对/比较优势、专业化方案、贸易收益
+- **externality.py**: 私人均衡 vs 社会最优、庇古税、DWL
+- **market_structure.py**: 三种市场结构均衡对比
 
-#### utils/ - 工具函数
-- **economics.py**: 经济学相关工具函数（基尼系数、洛伦兹曲线等）
-- **visualization.py**: 可视化工具类，生成各种图表
+### macro/ - 宏观经济
+- **gdp.py**: 支出法 GDP、平减指数、通胀率
+- **inflation.py**: CPI、货币数量论 (MV=PY)
+- **unemployment.py**: 失业率、参与率、失业分解
+- **solow.py**: 稳态、黄金律、收敛路径
+- **money.py**: 存款/货币乘数、派生存款
+- **ad_as.py**: 短/长期均衡、需求与供给冲击
+- **phillips.py**: 通胀-失业权衡、牺牲率
 
-### 主要文件
-
-#### config.py
-包含所有可配置参数：
-- 经济主体数量和参数分布
-- 市场参数（初始价格、调整速度等）
-- 模拟参数（轮次、收敛阈值等）
-- 输出设置（是否保存图表等）
-
-#### main.py
-主程序，执行完整的模拟流程：
-1. 初始化经济主体
-2. 创建市场
-3. 运行模拟
-4. 分析结果
-5. 生成可视化报告
-
-#### experiments.py
-包含5个经济学实验示例：
-1. 基本供需均衡
-2. 需求曲线移动（收入增加）
-3. 供给曲线移动（技术进步）
-4. 价格弹性比较（必需品vs奢侈品）
-5. 政府干预（价格上限）
+### utils/ - 工具
+- **economics.py**: 基尼系数、洛伦兹曲线、泰尔指数、税收/补贴均衡、政策干预
+- **visualization.py**: 微观 6 图 + 宏观 4 图（中文标注）
 
 ## 数据流
 
 ```
-配置参数 (config.py)
-    ↓
-创建经济主体 (agents/)
-    ↓
-初始化市场 (market/)
-    ↓
-运行模拟循环 ←──┐
-    ├ 计算供需      │
-    ├ 更新价格      │
-    ├ 市场出清      │
-    └ 检查均衡 ─────┘
-    ↓
-分析结果 (utils/economics.py)
-    ↓
-生成可视化 (utils/visualization.py)
-    ↓
-保存输出 (output/)
-```
-
-## 类关系图
-
-```
-┌─────────────┐
-│   Consumer  │
-│             │
-│ - income    │
-│ - alpha     │
-│ - beta      │
-│             │
-│ + utility() │
-│ + demand()  │
-└──────┬──────┘
-       │
-       │  聚合
-       │
-┌──────▼──────────────┐
-│      Market         │
-│                     │      ┌─────────────┐
-│ - consumers[]   ────┼─────▶│  Producer   │
-│ - producers[]       │      │             │
-│ - current_price     │      │ - mc_a      │
-│                     │      │ - mc_b      │
-│ + run_round()       │      │             │
-│ + clear_market()    │      │ + supply()  │
-│ + check_equilibrium()│     │ + produce() │
-└─────────────────────┘      └─────────────┘
-       │
-       │  使用
-       │
-┌──────▼──────────────┐
-│   Equilibrium       │
-│                     │
-│ + find_equilibrium()│
-│ + calc_surplus()    │
-│ + calc_elasticity() │
-└─────────────────────┘
+config.py → main.py / experiments.py
+                ↓
+      create_agents (utils/economics.py)
+                ↓
+        Market (market/market.py)
+                ├─ 计算供需 (agents/)
+                ├─ 更新价格 (tâtonnement)
+                ├─ 市场出清
+                └─ 均衡检验 (market/equilibrium.py)
+                ↓
+     分析 (utils/economics.py, micro/, macro/)
+                ↓
+     可视化 (utils/visualization.py)
+                ↓
+     输出 (output/)
 ```
 
 ## 关键算法
 
-### 1. 需求计算算法
-```python
-# consumer.py: calculate_demand()
-1. 给定价格 p
-2. 计算预算约束: max_q = income / p
-3. 在 [0, max_q] 范围内搜索
-4. 找到使 utility(q) 最大的 q
-5. 返回最优需求量
+### 需求解析求解（consumer.py）
+```
+MU(q) = p ⇒ 2βq² + (p+2β)q + (p-α) = 0
+```
+一元二次方程根，与预算约束 `income/p` 取较小值。
+
+### 价格调整（market.py）
+```
+ED = D(p) - S(p)
+p_new = p + α·[ED/(D+S)]·p
 ```
 
-### 2. 供给计算算法
-```python
-# producer.py: calculate_supply()
-1. 给定价格 p
-2. 从 MC(q) = p 求解: q = (p - a) / b
-3. 应用产能约束: q = min(q, capacity)
-4. 检查关闭条件: p >= AVC
-5. 返回最优供给量
+### 均衡检验（market.py）
+```
+std(P_recent)/mean < threshold  且  |D-S|/(D+S) < threshold
 ```
 
-### 3. 价格调整算法
-```python
-# market.py: update_price()
-1. 计算总需求 D(p) 和总供给 S(p)
-2. 计算超额需求: ED = D - S
-3. 标准化调整率: rate = ED / (D + S)
-4. 更新价格: p_new = p + α × rate × p
-5. 其中 α 是价格调整速度
+### 索洛稳态（solow.py）
 ```
-
-### 4. 均衡检验算法
-```python
-# market.py: check_equilibrium()
-1. 检查价格稳定性: std(recent_prices) / mean < threshold
-2. 检查供需平衡: |D - S| / (D + S) < threshold
-3. 两个条件都满足 → 达到均衡
+k* = (s·A/(δ+n))^(1/(1-α))
+λ = (1-α)(δ+n)   # 收敛速度
 ```
 
 ## 扩展点
 
-### 容易扩展的功能
-
-1. **新的经济主体类型**
-   - 在 `agents/` 目录添加新类
-   - 实现相同的接口方法
-
-2. **不同的市场机制**
-   - 继承 `Market` 类
-   - 重写 `update_price()` 方法
-
-3. **政策干预**
-   - 在 `utils/economics.py` 添加政策函数
-   - 修改市场参数或主体行为
-
-4. **新的分析指标**
-   - 在 `market/equilibrium.py` 添加计算函数
-   - 在可视化中展示
-
-5. **交互式界面**
-   - 使用 Streamlit 或 Dash
-   - 实时调整参数并观察结果
+1. **新增经济主体**: 在 `agents/` 添加类，实现相同接口
+2. **新市场机制**: 继承 `Market` 重写 `update_price()`
+3. **政策模拟**: 在 `utils/economics.py` 添加函数
+4. **新宏观模型**: 在 `macro/` 添加模块，遵循现有 docstring 与 `analyze()` 模式
+5. **交互式界面**: Streamlit / Dash 封装 `main.py` 流程
 
 ## 性能优化建议
 
-1. **大规模模拟**: 使用 NumPy 向量化计算
-2. **并行计算**: 使用 multiprocessing 并行模拟多个场景
-3. **缓存**: 缓存重复计算的需求/供给曲线
-4. **采样**: 对于可视化，只采样部分经济主体
+- 大规模模拟用 NumPy 向量化供需计算
+- 用 `multiprocessing` 并行多个场景
+- 缓存重复计算的需求/供给曲线
+- 可视化时采样部分主体
 
-## 测试建议
+## 测试策略
 
-建议创建 `tests/` 目录，包含：
-- 单元测试：测试各个类的方法
-- 集成测试：测试完整的模拟流程
-- 回归测试：确保结果可重现
-- 性能测试：测试大规模模拟的性能
+- 单元测试: 每个类的独立方法（tests/test_consumer.py 等）
+- 集成测试: 完整模拟流程（tests/test_integration.py）
+- 回归测试: 固定随机种子保证可重现
+- 运行: `python -m pytest tests/ -q`（约 25 秒，204 个测试）

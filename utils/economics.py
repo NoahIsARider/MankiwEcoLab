@@ -3,12 +3,14 @@
 Economics Utility Functions
 """
 
-import numpy as np
 from typing import List, Tuple
+
+import numpy as np
+
 from agents import Consumer, Producer
 
 
-def create_agents(num_consumers: int, num_producers: int, 
+def create_agents(num_consumers: int, num_producers: int,
                  consumer_params: dict, producer_params: dict,
                  random_seed: int = None) -> Tuple[List[Consumer], List[Producer]]:
     """
@@ -26,7 +28,7 @@ def create_agents(num_consumers: int, num_producers: int,
     """
     if random_seed is not None:
         np.random.seed(random_seed)
-    
+
     # 创建消费者
     consumers = []
     for i in range(num_consumers):
@@ -43,7 +45,7 @@ def create_agents(num_consumers: int, num_producers: int,
             0.01,
             np.random.normal(consumer_params['beta_mean'], consumer_params['beta_std'])
         )
-        
+
         consumer = Consumer(
             consumer_id=i,
             income=income,
@@ -51,7 +53,7 @@ def create_agents(num_consumers: int, num_producers: int,
             beta=beta
         )
         consumers.append(consumer)
-    
+
     # 创建生产者
     producers = []
     for i in range(num_producers):
@@ -72,7 +74,7 @@ def create_agents(num_consumers: int, num_producers: int,
             1,
             np.random.normal(producer_params['max_capacity_mean'], producer_params['max_capacity_std'])
         )
-        
+
         producer = Producer(
             producer_id=i,
             fixed_cost=fixed_cost,
@@ -81,7 +83,7 @@ def create_agents(num_consumers: int, num_producers: int,
             max_capacity=max_capacity
         )
         producers.append(producer)
-    
+
     return consumers, producers
 
 
@@ -94,13 +96,13 @@ def calculate_gini_coefficient(values: List[float]) -> float:
     """
     values = np.array(sorted(values))
     n = len(values)
-    
+
     if n == 0 or values.sum() == 0:
         return 0
-    
+
     index = np.arange(1, n + 1)
     gini = (2 * np.sum(index * values)) / (n * values.sum()) - (n + 1) / n
-    
+
     return gini
 
 
@@ -115,21 +117,21 @@ def calculate_lorenz_curve(values: List[float]) -> Tuple[np.ndarray, np.ndarray]
     """
     values = np.array(sorted(values))
     n = len(values)
-    
+
     if n == 0 or values.sum() == 0:
         return np.array([0, 1]), np.array([0, 1])
-    
+
     # 累积比例
     cumsum = np.cumsum(values)
     cumsum = cumsum / cumsum[-1]  # 归一化
-    
+
     # 人口比例
     population = np.arange(1, n + 1) / n
-    
+
     # 添加原点
     population = np.insert(population, 0, 0)
     cumsum = np.insert(cumsum, 0, 0)
-    
+
     return population, cumsum
 
 
@@ -142,10 +144,10 @@ def calculate_theil_index(values: List[float]) -> float:
     values = np.array(values)
     if len(values) == 0 or values.sum() == 0:
         return 0
-    
+
     mean_value = values.mean()
     theil = np.mean(values / mean_value * np.log(values / mean_value + 1e-10))
-    
+
     return theil
 
 
@@ -158,26 +160,26 @@ def calculate_market_concentration(quantities: List[float]) -> dict:
     """
     quantities = np.array(sorted(quantities, reverse=True))
     total = quantities.sum()
-    
+
     if total == 0:
         return {
             'CR4': 0,
             'CR8': 0,
             'HHI': 0
         }
-    
+
     # 市场份额
     shares = quantities / total
-    
+
     # CR4: 前4家企业的市场份额之和
     cr4 = shares[:4].sum() if len(shares) >= 4 else shares.sum()
-    
+
     # CR8: 前8家企业的市场份额之和
     cr8 = shares[:8].sum() if len(shares) >= 8 else shares.sum()
-    
+
     # HHI: 赫芬达尔-赫希曼指数
     hhi = np.sum(shares ** 2) * 10000
-    
+
     return {
         'CR4': cr4,
         'CR8': cr8,
@@ -196,21 +198,21 @@ def analyze_welfare_distribution(consumers: List[Consumer], producers: List[Prod
     consumer_surpluses = [c.consumer_surplus for c in consumers]
     consumer_utilities = [c.utility for c in consumers]
     consumer_expenditures = [c.expenditure for c in consumers]
-    
+
     # 生产者福利
     producer_surpluses = [p.producer_surplus for p in producers]
     producer_profits = [p.profit for p in producers]
     producer_revenues = [p.revenue for p in producers]
-    
+
     # 总福利
     total_consumer_surplus = sum(consumer_surpluses)
     total_producer_surplus = sum(producer_surpluses)
     total_surplus = total_consumer_surplus + total_producer_surplus
-    
+
     # 不平等指标
     consumer_gini = calculate_gini_coefficient(consumer_surpluses)
     producer_gini = calculate_gini_coefficient(producer_surpluses)
-    
+
     return {
         'total_consumer_surplus': total_consumer_surplus,
         'total_producer_surplus': total_producer_surplus,
@@ -234,27 +236,27 @@ def calculate_price_elasticity_of_demand(prices: List[float], quantities: List[f
     """
     if len(prices) < 2 or len(quantities) < 2:
         return 0
-    
+
     prices = np.array(prices)
     quantities = np.array(quantities)
-    
+
     # 计算变化率
     delta_q = np.diff(quantities)
     delta_p = np.diff(prices)
-    
+
     # 中点
     q_avg = (quantities[:-1] + quantities[1:]) / 2
     p_avg = (prices[:-1] + prices[1:]) / 2
-    
+
     # 避免除零
     mask = (p_avg != 0) & (q_avg != 0) & (delta_p != 0)
-    
+
     if not np.any(mask):
         return 0
-    
+
     # 弹性
     elasticities = (delta_q[mask] / q_avg[mask]) / (delta_p[mask] / p_avg[mask])
-    
+
     return np.mean(elasticities)
 
 
@@ -272,39 +274,39 @@ def simulate_policy_intervention(market, intervention_type: str, **kwargs) -> di
     """
     original_price = market.current_price
     original_quantity = market.quantity_history[-1] if market.quantity_history else 0
-    
+
     result = {
         'intervention_type': intervention_type,
         'original_price': original_price,
         'original_quantity': original_quantity
     }
-    
+
     if intervention_type == 'price_ceiling':
         # 价格上限
         ceiling = kwargs.get('ceiling', original_price * 0.8)
         result['ceiling_price'] = ceiling
         result['binding'] = ceiling < original_price
-        
+
         if result['binding']:
             # 短缺
             demand_at_ceiling = market.calculate_aggregate_demand(ceiling)
             supply_at_ceiling = market.calculate_aggregate_supply(ceiling)
             result['shortage'] = demand_at_ceiling - supply_at_ceiling
             result['new_quantity'] = supply_at_ceiling
-    
+
     elif intervention_type == 'price_floor':
         # 价格下限
         floor = kwargs.get('floor', original_price * 1.2)
         result['floor_price'] = floor
         result['binding'] = floor > original_price
-        
+
         if result['binding']:
             # 过剩
             demand_at_floor = market.calculate_aggregate_demand(floor)
             supply_at_floor = market.calculate_aggregate_supply(floor)
             result['surplus'] = supply_at_floor - demand_at_floor
             result['new_quantity'] = demand_at_floor
-    
+
     elif intervention_type == 'tax':
         # 从量税
         tax = kwargs.get('tax', 5.0)
@@ -312,7 +314,7 @@ def simulate_policy_intervention(market, intervention_type: str, **kwargs) -> di
         # 税后价格会上升
         result['price_increase'] = tax  # 简化假设
         result['tax_revenue'] = tax * original_quantity
-    
+
     elif intervention_type == 'subsidy':
         # 补贴
         subsidy = kwargs.get('subsidy', 5.0)
@@ -320,5 +322,87 @@ def simulate_policy_intervention(market, intervention_type: str, **kwargs) -> di
         # 补贴后价格会下降
         result['price_decrease'] = subsidy
         result['subsidy_cost'] = subsidy * original_quantity
-    
+
     return result
+
+
+def calculate_tax_equilibrium(market, tax_rate: float = 0.1) -> dict:
+    """
+    计算从价税下的市场均衡
+
+    对消费者征收从价税后，消费者的有效支付价格上升 (1+tax_rate)*P，
+    需求量下降；生产者的有效获得价格下降，供给量下降。
+
+    Args:
+        market: 市场对象
+        tax_rate: 从价税率 (如 0.1 表示 10%)
+
+    Returns:
+        税后市场均衡与税收收入
+    """
+    original_price = market.current_price
+
+    # 消费者面对含税价格，需求下降
+    taxed_demand = sum(c.calculate_demand(original_price * (1 + tax_rate))
+                       for c in market.consumers)
+    # 生产者面对税后价格，供给下降
+    taxed_supply = sum(p.calculate_supply(original_price * (1 - tax_rate))
+                       for p in market.producers)
+
+    # 均衡数量受限于较短的一边
+    new_quantity = min(taxed_demand, taxed_supply)
+    tax_revenue = new_quantity * original_price * tax_rate
+
+    return {
+        'original_price': original_price,
+        'original_quantity': market.quantity_history[-1] if market.quantity_history else 0,
+        'tax_rate': tax_rate,
+        'taxed_demand': taxed_demand,
+        'taxed_supply': taxed_supply,
+        'new_quantity': new_quantity,
+        'tax_revenue': tax_revenue,
+        'interpretation': (
+            f"税率 {tax_rate*100:.0f}% 下，交易量从 "
+            f"{market.quantity_history[-1] if market.quantity_history else 0:.2f} "
+            f"降至 {new_quantity:.2f}，政府税收收入为 {tax_revenue:.2f}。"
+        ),
+    }
+
+
+def calculate_subsidy_equilibrium(market, subsidy_rate: float = 0.1) -> dict:
+    """
+    计算补贴下的市场均衡
+
+    对消费者补贴后，有效支付价格下降，需求上升。
+
+    Args:
+        market: 市场对象
+        subsidy_rate: 补贴率 (如 0.1 表示补贴 10%)
+
+    Returns:
+        补贴后市场均衡与补贴成本
+    """
+    original_price = market.current_price
+
+    subsidized_demand = sum(c.calculate_demand(original_price * (1 - subsidy_rate))
+                            for c in market.consumers)
+    subsidized_supply = sum(p.calculate_supply(original_price * (1 + subsidy_rate))
+                            for p in market.producers)
+
+    new_quantity = min(subsidized_demand, subsidized_supply)
+    subsidy_cost = new_quantity * original_price * subsidy_rate
+
+    return {
+        'original_price': original_price,
+        'original_quantity': market.quantity_history[-1] if market.quantity_history else 0,
+        'subsidy_rate': subsidy_rate,
+        'subsidized_demand': subsidized_demand,
+        'subsidized_supply': subsidized_supply,
+        'new_quantity': new_quantity,
+        'subsidy_cost': subsidy_cost,
+        'interpretation': (
+            f"补贴率 {subsidy_rate*100:.0f}% 下，交易量从 "
+            f"{market.quantity_history[-1] if market.quantity_history else 0:.2f} "
+            f"升至 {new_quantity:.2f}，政府补贴成本为 {subsidy_cost:.2f}。"
+        ),
+    }

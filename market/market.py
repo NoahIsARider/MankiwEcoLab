@@ -3,8 +3,10 @@
 实现市场机制和价格发现过程
 """
 
-import numpy as np
 from typing import List
+
+import numpy as np
+
 from agents import Consumer, Producer
 
 
@@ -17,8 +19,8 @@ class Market:
     2. 市场出清 (matching buyers and sellers)
     3. 均衡达成过程
     """
-    
-    def __init__(self, consumers: List[Consumer], producers: List[Producer], 
+
+    def __init__(self, consumers: List[Consumer], producers: List[Producer],
                  initial_price: float, price_adjustment_speed: float = 0.1):
         """
         初始化市场
@@ -33,7 +35,7 @@ class Market:
         self.producers = producers
         self.current_price = initial_price
         self.price_adjustment_speed = price_adjustment_speed
-        
+
         # 市场历史数据
         self.price_history = [initial_price]
         self.quantity_history = []
@@ -42,13 +44,13 @@ class Market:
         self.consumer_surplus_history = []
         self.producer_surplus_history = []
         self.total_surplus_history = []
-        
+
         # 当前市场状态
         self.total_demand = 0
         self.total_supply = 0
         self.equilibrium_reached = False
         self.transactions = []
-    
+
     def calculate_aggregate_demand(self, price: float) -> float:
         """
         计算总需求: 所有消费者的需求量之和
@@ -57,7 +59,7 @@ class Market:
         """
         total_demand = sum(consumer.calculate_demand(price) for consumer in self.consumers)
         return total_demand
-    
+
     def calculate_aggregate_supply(self, price: float) -> float:
         """
         计算总供给: 所有生产者的供给量之和
@@ -66,7 +68,7 @@ class Market:
         """
         total_supply = sum(producer.calculate_supply(price) for producer in self.producers)
         return total_supply
-    
+
     def update_price(self):
         """
         根据供需关系更新价格
@@ -80,28 +82,28 @@ class Market:
         # 计算当前价格下的供需
         self.total_demand = self.calculate_aggregate_demand(self.current_price)
         self.total_supply = self.calculate_aggregate_supply(self.current_price)
-        
+
         # 供需缺口
         excess_demand = self.total_demand - self.total_supply
-        
+
         # 价格调整
         # Δp = α * (D - S) / (D + S) * p
         # 标准化的调整，避免价格变动过大
         if self.total_demand + self.total_supply > 0:
             price_change_rate = excess_demand / (self.total_demand + self.total_supply)
             price_change = self.price_adjustment_speed * price_change_rate * self.current_price
-            
+
             # 更新价格
             new_price = self.current_price + price_change
-            
+
             # 确保价格在合理范围内
             self.current_price = max(0.1, new_price)  # 价格不能为负或过小
-        
+
         # 记录价格历史
         self.price_history.append(self.current_price)
         self.total_demand_history.append(self.total_demand)
         self.total_supply_history.append(self.total_supply)
-    
+
     def clear_market(self):
         """
         市场出清: 撮合交易
@@ -113,40 +115,40 @@ class Market:
         """
         # 实际交易量
         quantity_traded = min(self.total_demand, self.total_supply)
-        
+
         if quantity_traded <= 0:
             self.quantity_history.append(0)
             return
-        
+
         # 为简化模拟，假设交易按比例分配
         # 实际中可以使用更复杂的匹配算法
-        
+
         # 按需求比例分配给消费者
         if self.total_demand > 0:
             for consumer in self.consumers:
                 consumer_share = consumer.quantity_demanded / self.total_demand
                 allocated_quantity = consumer_share * quantity_traded
                 consumer.consume(allocated_quantity, self.current_price)
-        
+
         # 按供给比例分配给生产者
         if self.total_supply > 0:
             for producer in self.producers:
                 producer_share = producer.quantity_supplied / self.total_supply
                 allocated_quantity = producer_share * quantity_traded
                 producer.produce(allocated_quantity, self.current_price)
-        
+
         # 记录交易量
         self.quantity_history.append(quantity_traded)
-        
+
         # 计算市场剩余
         total_consumer_surplus = sum(c.consumer_surplus for c in self.consumers)
         total_producer_surplus = sum(p.producer_surplus for p in self.producers)
         total_surplus = total_consumer_surplus + total_producer_surplus
-        
+
         self.consumer_surplus_history.append(total_consumer_surplus)
         self.producer_surplus_history.append(total_producer_surplus)
         self.total_surplus_history.append(total_surplus)
-    
+
     def check_equilibrium(self, threshold: float = 0.01) -> bool:
         """
         检查是否达到均衡
@@ -158,23 +160,23 @@ class Market:
         # 检查价格是否稳定
         if len(self.price_history) < 5:
             return False
-        
+
         recent_prices = self.price_history[-5:]
         price_variance = np.std(recent_prices) / np.mean(recent_prices)
-        
+
         # 检查供需是否平衡
         if self.total_demand + self.total_supply > 0:
             supply_demand_gap = abs(self.total_supply - self.total_demand) / (self.total_supply + self.total_demand)
         else:
             supply_demand_gap = 1.0
-        
+
         # 均衡条件
         price_stable = price_variance < threshold
         market_clear = supply_demand_gap < threshold
-        
+
         self.equilibrium_reached = price_stable and market_clear
         return self.equilibrium_reached
-    
+
     def run_round(self):
         """
         运行一轮市场交易
@@ -187,19 +189,19 @@ class Market:
         self.update_price()
         self.clear_market()
         return self.check_equilibrium()
-    
+
     def get_demand_curve(self, price_range: np.ndarray) -> np.ndarray:
         """
         获取总需求曲线
         """
         return np.array([self.calculate_aggregate_demand(p) for p in price_range])
-    
+
     def get_supply_curve(self, price_range: np.ndarray) -> np.ndarray:
         """
         获取总供给曲线
         """
         return np.array([self.calculate_aggregate_supply(p) for p in price_range])
-    
+
     def get_market_stats(self):
         """
         获取市场统计信息
@@ -216,7 +218,7 @@ class Market:
             'equilibrium_reached': self.equilibrium_reached,
             'num_rounds': len(self.price_history) - 1
         }
-    
+
     def __repr__(self):
         return (f"Market(consumers={len(self.consumers)}, producers={len(self.producers)}, "
                 f"price={self.current_price:.2f}, equilibrium={self.equilibrium_reached})")

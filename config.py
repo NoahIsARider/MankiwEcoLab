@@ -85,3 +85,66 @@ SUBSIDY = 0.0  # 补贴
 
 # 随机种子(用于结果可重复)
 RANDOM_SEED = 42  # None表示随机
+
+# ==================== 宏观经济学模型参数 ====================
+# GDP 核算
+MACRO_CONSUMPTION = 6000.0    # 消费 C
+MACRO_INVESTMENT = 1500.0     # 投资 I
+MACRO_GOVERNMENT = 2000.0     # 政府购买 G
+MACRO_NET_EXPORTS = -500.0    # 净出口 NX
+
+# CPI 一篮子商品
+CPI_BASE_PRICES = [10.0, 20.0, 30.0]   # 基期价格
+CPI_BASE_QUANTITIES = [4.0, 3.0, 2.0]  # 篮子数量
+CPI_CURRENT_PRICES = [12.0, 22.0, 31.0]  # 当前价格
+
+# 货币数量论
+MONEY_SUPPLY = 1000.0   # 货币供给 M
+MONEY_VELOCITY = 5.0    # 货币流通速度 V
+REAL_OUTPUT = 100.0     # 实际产出 Y
+
+# 劳动力市场
+LABOR_ADULT_POPULATION = 10000.0  # 成年人口
+LABOR_EMPLOYED = 9000.0           # 就业人数
+LABOR_UNEMPLOYED = 500.0          # 失业人数
+
+# 索洛增长模型
+SOLOW_ALPHA = 0.3           # 资本收入份额
+SOLOW_SAVINGS_RATE = 0.2    # 储蓄率
+SOLOW_DEPRECIATION = 0.05   # 折旧率
+SOLOW_POPULATION_GROWTH = 0.01  # 人口增长率
+
+# 货币创造
+RESERVE_RATIO = 0.10    # 法定准备金率
+INITIAL_DEPOSIT = 1000.0  # 初始存款
+
+# AD-AS 模型
+ADAS_POTENTIAL_OUTPUT = 100.0  # 潜在产出
+ADAS_AD_INTERCEPT = 150.0      # AD 截距
+ADAS_AD_SLOPE = 0.5            # AD 斜率
+ADAS_SRAS_INTERCEPT = 50.0     # SRAS 截距
+ADAS_SRAS_SLOPE = 0.4          # SRAS 斜率
+
+# 菲利普斯曲线
+PHILLIPS_EXPECTED_INFLATION = 3.0  # 预期通胀
+PHILLIPS_BETA = 0.5                # 通胀-失业权衡系数
+PHILLIPS_NATURAL_UNEMPLOYMENT = 5.0  # 自然失业率
+
+# ==================== 微观补充模型参数 ====================
+# 生产可能性边界
+PPF_RESOURCE = 100.0   # 总资源
+PPF_INPUT_X = 1.0      # 单位X所需资源
+PPF_INPUT_Y = 2.0      # 单位Y所需资源
+
+# 外部性
+EXTERNALITY_DEMAND_INTERCEPT = 100.0  # 需求截距
+EXTERNALITY_DEMAND_SLOPE = 2.0        # 需求斜率
+EXTERNALITY_SUPPLY_INTERCEPT = 10.0   # 供给截距
+EXTERNALITY_SUPPLY_SLOPE = 1.0        # 供给斜率
+EXTERNALITY_VALUE = 10.0              # 外部性价值 (正=负外部性)
+
+# 市场结构
+STRUCTURE_DEMAND_INTERCEPT = 100.0  # 市场需求截距
+STRUCTURE_DEMAND_SLOPE = 1.0        # 市场需求斜率
+STRUCTURE_FIRM_MC = 20.0            # 企业边际成本
+STRUCTURE_NUM_FIRMS = 3             # 企业数量

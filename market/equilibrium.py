@@ -3,8 +3,15 @@
 计算市场均衡和效率指标
 """
 
+from typing import List, Tuple
+
 import numpy as np
-from typing import Tuple, List
+
+# 兼容 numpy 1.x (np.trapz) 与 numpy 2.x (np.trapezoid)
+try:
+    _trapz = np.trapezoid
+except AttributeError:
+    _trapz = np.trapz
 
 
 def find_equilibrium(demand_func, supply_func, price_range: Tuple[float, float] = (0.1, 500)) -> Tuple[float, float]:
@@ -25,18 +32,18 @@ def find_equilibrium(demand_func, supply_func, price_range: Tuple[float, float] 
     prices = np.linspace(price_range[0], price_range[1], 10000)
     demands = np.array([demand_func(p) for p in prices])
     supplies = np.array([supply_func(p) for p in prices])
-    
+
     # 找到供需最接近的点
     excess_demand = np.abs(demands - supplies)
     equilibrium_idx = np.argmin(excess_demand)
-    
+
     equilibrium_price = prices[equilibrium_idx]
     equilibrium_quantity = demands[equilibrium_idx]
-    
+
     return equilibrium_price, equilibrium_quantity
 
 
-def calculate_consumer_surplus_analytical(demand_func, equilibrium_price: float, 
+def calculate_consumer_surplus_analytical(demand_func, equilibrium_price: float,
                                          equilibrium_quantity: float) -> float:
     """
     计算消费者剩余 (解析方法)
@@ -47,7 +54,7 @@ def calculate_consumer_surplus_analytical(demand_func, equilibrium_price: float,
     """
     # 使用数值积分
     quantities = np.linspace(0, equilibrium_quantity, 1000)
-    
+
     # 需要反需求函数，这里使用近似
     # 通过求解 D(p) = q 得到 p = D^(-1)(q)
     inverse_demand = []
@@ -57,11 +64,11 @@ def calculate_consumer_surplus_analytical(demand_func, equilibrium_price: float,
         demands = np.array([demand_func(p) for p in prices])
         idx = np.argmin(np.abs(demands - q))
         inverse_demand.append(prices[idx])
-    
+
     # 数值积分
-    total_willingness = np.trapz(inverse_demand, quantities)
+    total_willingness = _trapz(inverse_demand, quantities)
     consumer_surplus = total_willingness - equilibrium_price * equilibrium_quantity
-    
+
     return max(0, consumer_surplus)
 
 
@@ -76,7 +83,7 @@ def calculate_producer_surplus_analytical(supply_func, equilibrium_price: float,
     """
     # 使用数值积分
     quantities = np.linspace(0, equilibrium_quantity, 1000)
-    
+
     # 需要反供给函数 (供给曲线即MC曲线)
     inverse_supply = []
     for q in quantities:
@@ -84,15 +91,15 @@ def calculate_producer_surplus_analytical(supply_func, equilibrium_price: float,
         supplies = np.array([supply_func(p) for p in prices])
         idx = np.argmin(np.abs(supplies - q))
         inverse_supply.append(prices[idx])
-    
+
     # 数值积分
-    total_cost = np.trapz(inverse_supply, quantities)
+    total_cost = _trapz(inverse_supply, quantities)
     producer_surplus = equilibrium_price * equilibrium_quantity - total_cost
-    
+
     return max(0, producer_surplus)
 
 
-def calculate_deadweight_loss(demand_func, supply_func, actual_quantity: float, 
+def calculate_deadweight_loss(demand_func, supply_func, actual_quantity: float,
                               equilibrium_quantity: float, actual_price: float) -> float:
     """
     计算无谓损失 (Deadweight Loss)
@@ -103,31 +110,31 @@ def calculate_deadweight_loss(demand_func, supply_func, actual_quantity: float,
     """
     if abs(actual_quantity - equilibrium_quantity) < 0.01:
         return 0
-    
+
     # 在实际数量下，需求价格和供给价格
     # 通过反函数求得
-    quantities = np.linspace(min(actual_quantity, equilibrium_quantity), 
+    quantities = np.linspace(min(actual_quantity, equilibrium_quantity),
                             max(actual_quantity, equilibrium_quantity), 100)
-    
+
     # 计算需求价格和供给价格
     demand_prices = []
     supply_prices = []
-    
+
     for q in quantities:
         # 找到需求价格
         prices = np.linspace(0.1, 500, 1000)
         demands = np.array([demand_func(p) for p in prices])
         idx_d = np.argmin(np.abs(demands - q))
         demand_prices.append(prices[idx_d])
-        
+
         # 找到供给价格
         supplies = np.array([supply_func(p) for p in prices])
         idx_s = np.argmin(np.abs(supplies - q))
         supply_prices.append(prices[idx_s])
-    
+
     # 无谓损失是两条曲线之间的面积
-    dwl = np.trapz(np.array(demand_prices) - np.array(supply_prices), quantities)
-    
+    dwl = _trapz(np.array(demand_prices) - np.array(supply_prices), quantities)
+
     return abs(dwl)
 
 
@@ -141,12 +148,12 @@ def calculate_market_efficiency(consumer_surplus: float, producer_surplus: float
     """
     total_surplus = consumer_surplus + producer_surplus
     potential_surplus = total_surplus + deadweight_loss
-    
+
     if potential_surplus > 0:
         efficiency = (total_surplus / potential_surplus) * 100
     else:
         efficiency = 0
-    
+
     return {
         'consumer_surplus': consumer_surplus,
         'producer_surplus': producer_surplus,
@@ -174,13 +181,13 @@ def calculate_elasticity(func, price: float, delta: float = 0.01) -> float:
     Q = func(price)
     if Q == 0 or price == 0:
         return 0
-    
+
     # 数值导数
     Q_plus = func(price + delta)
     dQ_dP = (Q_plus - Q) / delta
-    
+
     elasticity = (dQ_dP * price) / Q
-    
+
     return elasticity
 
 
@@ -193,7 +200,7 @@ def classify_elasticity(elasticity: float) -> str:
     - |ε| < 1: 非弹性 (inelastic)
     """
     abs_e = abs(elasticity)
-    
+
     if abs_e > 1.1:
         return "elastic"
     elif abs_e < 0.9:

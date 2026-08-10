@@ -3,7 +3,7 @@
 Market Module - Market mechanism and equilibrium
 """
 
+from .equilibrium import calculate_market_efficiency, find_equilibrium
 from .market import Market
-from .equilibrium import find_equilibrium, calculate_market_efficiency
 
 __all__ = ['Market', 'find_equilibrium', 'calculate_market_efficiency']

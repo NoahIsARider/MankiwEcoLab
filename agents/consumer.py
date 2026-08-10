@@ -5,6 +5,12 @@
 
 import numpy as np
 
+# 兼容 numpy 1.x (np.trapz) 与 numpy 2.x (np.trapezoid)
+try:
+    _trapz = np.trapezoid
+except AttributeError:
+    _trapz = np.trapz
+
 
 class Consumer:
     """
@@ -18,7 +24,7 @@ class Consumer:
     
     预算约束: p * q <= income
     """
-    
+
     def __init__(self, consumer_id, income, alpha, beta):
         """
         初始化消费者
@@ -33,14 +39,14 @@ class Consumer:
         self.income = max(income, 0)  # 收入不能为负
         self.alpha = max(alpha, 0.1)  # alpha必须为正
         self.beta = max(beta, 0.01)  # beta必须为正
-        
+
         # 消费状态
         self.quantity_demanded = 0  # 需求量
         self.quantity_consumed = 0  # 实际消费量
         self.utility = 0  # 实际获得的效用
         self.consumer_surplus = 0  # 消费者剩余
         self.expenditure = 0  # 支出
-    
+
     def utility_function(self, quantity):
         """
         效用函数: 计算消费quantity单位商品的总效用
@@ -54,7 +60,7 @@ class Consumer:
         if quantity < 0:
             return -np.inf
         return self.alpha * np.log(quantity + 1) - self.beta * quantity ** 2
-    
+
     def marginal_utility(self, quantity):
         """
         边际效用: 计算在quantity水平下，多消费一单位的效用增量
@@ -64,7 +70,7 @@ class Consumer:
         if quantity < 0:
             return 0
         return self.alpha / (quantity + 1) - 2 * self.beta * quantity
-    
+
     def calculate_demand(self, price):
         """
         计算需求量: 基于效用最大化原则
@@ -77,26 +83,37 @@ class Consumer:
         
         求解: alpha / (q + 1) - 2 * beta * q = p
         
-        使用数值方法求解最优需求量
+        这是关于 q 的一元二次方程:
+        2*beta*q^2 + (p + 2*beta)*q + (p - alpha) = 0
+        
+        解析求解后再应用预算约束，得到最优需求量。
         """
         if price <= 0:
             return 0
-        
-        # 预算约束下的最大可能购买量
+
+        # 解析求解 MU(q) = p 的二次方程
+        # 2*beta*q^2 + (p + 2*beta)*q + (p - alpha) = 0
+        a = 2 * self.beta
+        b = price + 2 * self.beta
+        c = price - self.alpha
+
+        discriminant = b ** 2 - 4 * a * c
+
+        if discriminant <= 0:
+            # 无实数解 => 边际效用始终低于价格，不消费
+            optimal_quantity = 0.0
+        else:
+            # 取正的根
+            optimal_quantity = (-b + np.sqrt(discriminant)) / (2 * a)
+            optimal_quantity = max(optimal_quantity, 0.0)
+
+        # 应用预算约束: p * q <= income
         max_affordable = self.income / price
-        
-        # 使用网格搜索找到最优需求量
-        # 在[0, max_affordable]范围内寻找效用最大的点
-        quantities = np.linspace(0, max_affordable, 1000)
-        utilities = np.array([self.utility_function(q) for q in quantities])
-        
-        # 找到效用最大的需求量
-        optimal_idx = np.argmax(utilities)
-        optimal_quantity = quantities[optimal_idx]
-        
+        optimal_quantity = min(optimal_quantity, max_affordable)
+
         self.quantity_demanded = optimal_quantity
         return optimal_quantity
-    
+
     def calculate_willingness_to_pay(self, quantity):
         """
         计算支付意愿: 消费者愿意为quantity单位商品支付的最高价格
@@ -104,7 +121,7 @@ class Consumer:
         WTP = MU(q) (边际效用即为支付意愿)
         """
         return self.marginal_utility(quantity)
-    
+
     def consume(self, quantity, price):
         """
         实际消费
@@ -116,24 +133,24 @@ class Consumer:
         self.quantity_consumed = quantity
         self.expenditure = price * quantity
         self.utility = self.utility_function(quantity)
-        
+
         # 计算消费者剩余 (consumer surplus)
         # CS = 总支付意愿 - 实际支出
         # 近似计算: 积分 WTP(q) from 0 to quantity
         if quantity > 0:
             quantities = np.linspace(0, quantity, 100)
             wtp_curve = np.array([self.calculate_willingness_to_pay(q) for q in quantities])
-            total_wtp = np.trapz(wtp_curve, quantities)  # 数值积分
+            total_wtp = _trapz(wtp_curve, quantities)  # 数值积分
             self.consumer_surplus = total_wtp - self.expenditure
         else:
             self.consumer_surplus = 0
-    
+
     def get_demand_curve_point(self, price):
         """
         获取需求曲线上的一个点 (price, quantity)
         """
         return (price, self.calculate_demand(price))
-    
+
     def __repr__(self):
         return (f"Consumer(id={self.id}, income={self.income:.2f}, "
                 f"alpha={self.alpha:.2f}, beta={self.beta:.4f})")
