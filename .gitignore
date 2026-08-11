@@ -35,6 +35,7 @@ env/
 # Jupyter Notebook
 .ipynb_checkpoints
 *.ipynb
+!notebooks/interactive_lab.ipynb
 
 # # Output
 # output/

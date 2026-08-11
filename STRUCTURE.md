@@ -12,7 +12,7 @@ PrinciplesOfEconomy/
 ├── .gitignore                   # Git 忽略文件
 ├── config.py                    # 全部可配置参数
 ├── main.py                      # CLI 入口（微观/宏观/十大原理）
-├── experiments.py               # 8 个经济学实验
+├── experiments.py               # 10 个经济学实验
 │
 ├── agents/                      # 微观经济主体
 │   ├── __init__.py
@@ -29,7 +29,9 @@ PrinciplesOfEconomy/
 │   ├── ppf.py                   # 生产可能性边界
 │   ├── trade.py                 # 比较优势与贸易
 │   ├── externality.py           # 外部性与庇古税
-│   └── market_structure.py      # 完全竞争/垄断/寡头
+│   ├── market_structure.py      # 完全竞争/垄断/寡头
+│   ├── consumer_choice.py       # 预算约束/柯布-道格拉斯效用/最优选择
+│   └── game_theory.py           # 纳什均衡/占优策略/混合策略/古诺
 │
 ├── macro/                       # 宏观经济模型
 │   ├── __init__.py
@@ -39,21 +41,31 @@ PrinciplesOfEconomy/
 │   ├── solow.py                 # 索洛增长模型
 │   ├── money.py                 # 货币创造与乘数
 │   ├── ad_as.py                 # AD-AS 模型
-│   └── phillips.py              # 菲利普斯曲线
+│   ├── phillips.py              # 菲利普斯曲线
+│   ├── loanable_funds.py        # 可贷资金市场与挤出效应
+│   └── islm.py                  # IS-LM 模型
 │
 ├── utils/                       # 工具模块
 │   ├── __init__.py
 │   ├── economics.py             # 基尼系数/税收均衡/政策模拟
-│   └── visualization.py         # EconomicsVisualizer + MacroVisualizer
+│   ├── visualization.py         # EconomicsVisualizer + MacroVisualizer
+│   └── output.py                # 控制台表格/分隔线/格式化
 │
-├── tests/                       # 测试套件（204 个测试）
+├── notebooks/                   # 交互式 Notebook
+│   └── interactive_lab.ipynb    # 模型工具箱交互演示
+│
+├── tests/                       # 测试套件（280 个测试）
 │   ├── test_consumer.py
 │   ├── test_producer.py
 │   ├── test_market.py
 │   ├── test_equilibrium.py
 │   ├── test_micro.py
 │   ├── test_macro.py
-│   └── test_integration.py
+│   ├── test_integration.py
+│   ├── test_consumer_choice.py
+│   ├── test_game_theory.py
+│   ├── test_loanable_funds.py
+│   └── test_islm.py
 │
 ├── docs/                        # 文档
 │   ├── index.md                 # 文档索引
@@ -84,6 +96,8 @@ PrinciplesOfEconomy/
 - **trade.py**: 绝对/比较优势、专业化方案、贸易收益
 - **externality.py**: 私人均衡 vs 社会最优、庇古税、DWL
 - **market_structure.py**: 三种市场结构均衡对比
+- **consumer_choice.py**: 预算约束、柯布-道格拉斯效用、最优组合 `x*=αI/Px`、需求/恩格尔曲线
+- **game_theory.py**: 纯/混合策略纳什均衡、占优策略、帕累托最优、古诺竞争
 
 ### macro/ - 宏观经济
 - **gdp.py**: 支出法 GDP、平减指数、通胀率
@@ -93,10 +107,13 @@ PrinciplesOfEconomy/
 - **money.py**: 存款/货币乘数、派生存款
 - **ad_as.py**: 短/长期均衡、需求与供给冲击
 - **phillips.py**: 通胀-失业权衡、牺牲率
+- **loanable_funds.py**: 可贷资金市场均衡、财政政策、挤出效应
+- **islm.py**: IS/LM 曲线、均衡、财政与货币政策、支出乘数
 
 ### utils/ - 工具
 - **economics.py**: 基尼系数、洛伦兹曲线、泰尔指数、税收/补贴均衡、政策干预
-- **visualization.py**: 微观 6 图 + 宏观 4 图（中文标注）
+- **visualization.py**: 微观 6 图 + 宏观 6 图 + 消费者选择图（英文标注）
+- **output.py**: 对齐表格、分隔标题、百分比格式化
 
 ## 数据流
 
@@ -163,4 +180,4 @@ k* = (s·A/(δ+n))^(1/(1-α))
 - 单元测试: 每个类的独立方法（tests/test_consumer.py 等）
 - 集成测试: 完整模拟流程（tests/test_integration.py）
 - 回归测试: 固定随机种子保证可重现
-- 运行: `python -m pytest tests/ -q`（约 25 秒，204 个测试）
+- 运行: `python -m pytest tests/ -q`（280 个测试）

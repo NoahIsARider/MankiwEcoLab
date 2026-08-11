@@ -26,6 +26,8 @@ from utils.economics import (
 )
 from utils.visualization import EconomicsVisualizer
 
+__version__ = "2.1.0"
+
 # 配置日志
 logging.basicConfig(
     level=getattr(logging, config.LOG_LEVEL),
@@ -473,13 +475,59 @@ def run_macro_demo():
     print(f"  {pc_analysis['interpretation']}")
     results['phillips'] = pc_analysis
 
+    # 8. 可贷资金市场
+    print("\n【8. 可贷资金市场 - 金融体系】")
+    from macro import LoanableFundsModel
+    lf = LoanableFundsModel(
+        savings_autonomous=config.LOANABLE_SAVINGS_AUTONOMOUS,
+        savings_sensitivity=config.LOANABLE_SAVINGS_SENSITIVITY,
+        investment_autonomous=config.LOANABLE_INVESTMENT_AUTONOMOUS,
+        investment_sensitivity=config.LOANABLE_INVESTMENT_SENSITIVITY,
+        government_borrowing=config.LOANABLE_GOVERNMENT_BORROWING,
+    )
+    lf_analysis = lf.analyze()
+    print(f"  均衡利率: {lf_analysis['equilibrium']['interest_rate']*100:.2f}%")
+    print(f"  储蓄 (资金供给): {lf_analysis['equilibrium']['savings']:.2f}")
+    print(f"  投资 (资金需求): {lf_analysis['equilibrium']['investment']:.2f}")
+    print(f"  {lf_analysis['interpretation']}")
+    fiscal = lf.with_fiscal_policy(additional_borrowing=200)
+    print(f"  财政扩张模拟: 利率升 {fiscal['interest_rate_change']*100:+.2f}%, "
+          f"挤出投资 {fiscal['crowding_out']:.2f}")
+    results['loanable_funds'] = lf_analysis
+
+    # 9. IS-LM 模型
+    print("\n【9. IS-LM 模型 - 短期均衡】")
+    from macro import ISLMModel
+    islm = ISLMModel(
+        consumption_autonomous=config.ISLM_CONSUMPTION_AUTONOMOUS,
+        marginal_propensity_to_consume=config.ISLM_MPC,
+        tax_rate=config.ISLM_TAX_RATE,
+        investment_autonomous=config.ISLM_INVESTMENT_AUTONOMOUS,
+        investment_sensitivity=config.ISLM_INVESTMENT_SENSITIVITY,
+        government_spending=config.ISLM_GOVERNMENT_SPENDING,
+        real_money_supply=config.ISLM_REAL_MONEY_SUPPLY,
+        money_demand_income=config.ISLM_MONEY_DEMAND_INCOME,
+        money_demand_interest=config.ISLM_MONEY_DEMAND_INTEREST,
+    )
+    islm_analysis = islm.analyze()
+    print(f"  均衡产出: {islm_analysis['equilibrium']['output']:.2f}")
+    print(f"  均衡利率: {islm_analysis['equilibrium']['interest_rate']*100:.2f}%")
+    print(f"  支出乘数: {islm_analysis['spending_multiplier']:.2f}")
+    print(f"  {islm_analysis['interpretation']}")
+    fp = islm.fiscal_policy(spending_change=50)
+    print(f"  财政政策: 产出升 {fp['output_change']:+.2f}, 利率升 {fp['interest_rate_change']*100:+.2f}%")
+    mp = islm.monetary_policy(money_supply_change=100)
+    print(f"  货币政策: 产出升 {mp['output_change']:+.2f}, 利率降 {mp['interest_rate_change']*100:+.2f}%")
+    results['islm'] = islm_analysis
+
     # 生成宏观可视化
     if config.SAVE_PLOTS:
         try:
             print("\n正在生成宏观图表...")
             visualizer = MacroVisualizer(output_dir=config.OUTPUT_DIR,
                                          dpi=config.DPI, style=config.PLOT_STYLE)
-            visualizer.generate_macro_report(solow, adas, pc, money)
+            visualizer.generate_macro_report(solow, adas, pc, money,
+                                             loanable_funds=lf, islm=islm)
             print("✓ 宏观图表已生成")
         except Exception as e:
             logger.warning(f"宏观图表生成失败: {e}")
@@ -531,6 +579,22 @@ def run_ten_principles_demo():
     print("  边际效用递减: 多消费一单位的额外满足感逐渐减少")
     demos.append('marginal')
 
+    # 原理3b: 消费者选择理论 (预算线与无差异曲线)
+    print("\n【原理3b】理性人考虑边际量 - 消费者选择理论")
+    from micro import BudgetConstraint, CobbDouglasUtility, ConsumerChoice
+    budget = BudgetConstraint(income=config.CHOICE_INCOME,
+                              price_x=config.CHOICE_PRICE_X,
+                              price_y=config.CHOICE_PRICE_Y)
+    choice = ConsumerChoice(budget, CobbDouglasUtility(alpha=config.CHOICE_ALPHA))
+    bundle = choice.optimal_bundle()
+    print(f"  预算约束: {config.CHOICE_PRICE_X}·x + {config.CHOICE_PRICE_Y}·y = "
+          f"{config.CHOICE_INCOME}")
+    print(f"  最优组合: x* = {bundle['x']:.2f}, y* = {bundle['y']:.2f}, "
+          f"效用 = {bundle['utility']:.2f}")
+    print(f"  相切条件 MRS = Px/Py: {choice.analyze()['mrs']:.3f} ≈ "
+          f"{choice.analyze()['price_ratio']:.3f}")
+    demos.append('consumer_choice')
+
     # 原理4: 人们会对激励做出反应 (政府补贴实验)
     print("\n【原理4】人们会对激励做出反应")
     from utils.economics import create_agents, simulate_policy_intervention
@@ -560,6 +624,18 @@ def run_ten_principles_demo():
     gains = trade_analysis['gains']
     print(f"  贸易收益: X 增加 {gains['gain_X']:.2f}, Y 增加 {gains['gain_Y']:.2f}")
     demos.append('trade')
+
+    # 原理5b: 博弈论 - 囚徒困境 (合作 vs 自利)
+    print("\n【原理5b】博弈论 - 囚徒困境 (自利可能阻碍合作)")
+    from micro import prisoners_dilemma
+    pd = prisoners_dilemma()
+    pd_nash = pd.pure_nash_equilibria()
+    print(f"  双方沉默收益: {pd.payoff(0, 0)} (合作最优: -1, -1)")
+    print(f"  纳什均衡: {pd_nash[0]['A_strategy']}/{pd_nash[0]['B_strategy']} "
+          f"收益 {pd_nash[0]['payoff']}")
+    print(f"  占优策略均衡: {pd.has_dominant_strategy_equilibrium()}")
+    print("  自利行为 (招供) 使双方陷入更差结果, 说明合作需要制度保障")
+    demos.append('game_theory')
 
     # 原理6: 市场通常是组织经济活动的好方法
     print("\n【原理6】市场是组织经济活动的好方法")
@@ -619,6 +695,8 @@ def main():
     """主函数"""
     parser = argparse.ArgumentParser(
         description='经济学原理模拟系统 - 基于曼昆《经济学原理》的学习工具')
+    parser.add_argument('--version', action='version',
+                        version=f'mankiwecolab {__version__}')
     parser.add_argument('--macro', action='store_true',
                         help='运行宏观经济学模型演示')
     parser.add_argument('--demo', action='store_true',

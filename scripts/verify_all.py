@@ -390,12 +390,91 @@ def verify_cli():
     check("run_full_simulation 无异常", len(out) > 100, f"输出{len(out)}字符")
 
 
+def verify_new_models():
+    section("7. 新增模型 - 消费者选择 / 博弈论 / 可贷资金 / IS-LM")
+    from macro import ISLMModel, LoanableFundsModel
+    from micro import (
+        BudgetConstraint,
+        CobbDouglasUtility,
+        ConsumerChoice,
+        CournotGame,
+        matching_pennies,
+        prisoners_dilemma,
+    )
+
+    # 消费者选择
+    budget = BudgetConstraint(income=1000, price_x=10, price_y=20)
+    utility = CobbDouglasUtility(alpha=0.5)
+    choice = ConsumerChoice(budget, utility)
+    bundle = choice.optimal_bundle()
+    check("最优束 x*=50", abs(bundle["x"] - 50) < 1e-6, f"x*={bundle['x']}")
+    check("最优束 y*=25", abs(bundle["y"] - 25) < 1e-6, f"y*={bundle['y']}")
+    check("相切条件", choice.verify_tangency(), "MRS=Px/Py")
+    check("预算约束", choice.verify_budget_satisfied(), "支出=收入")
+    prices, quantities = choice.demand_curve("x", price_range=(5, 20))
+    check("需求曲线向右下倾斜", quantities[0] > quantities[-1],
+          f"q(5)={quantities[0]:.2f} > q(20)={quantities[-1]:.2f}")
+    incomes, engel_q = choice.engel_curve("x", income_range=(500, 2000))
+    check("恩格尔曲线向上", engel_q[-1] > engel_q[0],
+          f"q(500)={engel_q[0]:.2f} < q(2000)={engel_q[-1]:.2f}")
+
+    # 博弈论
+    pd = prisoners_dilemma()
+    nash = pd.pure_nash_equilibria()
+    check("囚徒困境纳什均衡", nash[0]["A"] == 1 and nash[0]["B"] == 1,
+          f"均衡={nash[0]['A_strategy']}/{nash[0]['B_strategy']}")
+    check("占优策略均衡", pd.has_dominant_strategy_equilibrium(), "双方招供")
+    mp = matching_pennies()
+    mixed = mp.mixed_strategy_equilibrium()
+    check("猜硬币混合均衡 p=q=0.5", mixed["valid"] and abs(mixed["p"] - 0.5) < 1e-6,
+          f"p={mixed['p']:.4f}, q={mixed['q']:.4f}")
+    cg = CournotGame(num_firms=2, demand_intercept=100, demand_slope=1, marginal_cost=20)
+    cn = cg.nash_equilibrium()
+    check("古诺 q*=26.67", abs(cn["per_firm_output"] - 80 / 3) < 1e-3,
+          f"q*={cn['per_firm_output']:.4f}")
+    check("古诺价格>边际成本", cn["price"] > 20, f"P={cn['price']:.2f}")
+    check("串谋利润>竞争利润", cg.collusion_output()["total_profit"]
+          > cn["total_profit"], "垄断利润更高")
+
+    # 可贷资金
+    lf = LoanableFundsModel(
+        savings_autonomous=800, savings_sensitivity=200,
+        investment_autonomous=1200, investment_sensitivity=400,
+        government_borrowing=0,
+    )
+    r_star = lf.equilibrium_rate()
+    check("可贷资金均衡利率", abs(r_star - 2 / 3) < 1e-6, f"r*={r_star:.4f}")
+    eq = lf.equilibrium()
+    check("储蓄=投资", abs(eq["savings"] - eq["investment"]) < 1e-6,
+          f"S={eq['savings']:.2f}, I={eq['investment']:.2f}")
+    fiscal = lf.with_fiscal_policy(additional_borrowing=200)
+    check("财政扩张升利率", fiscal["interest_rate_change"] > 0,
+          f"Δr={fiscal['interest_rate_change']:.4f}")
+    check("挤出效应为正", fiscal["crowding_out"] > 0,
+          f"crowding_out={fiscal['crowding_out']:.2f}")
+
+    # IS-LM
+    islm = ISLMModel()
+    iseq = islm.equilibrium()
+    check("IS-LM 产出为正", iseq["output"] > 0, f"Y*={iseq['output']:.2f}")
+    check("IS-LM 利率非负", iseq["interest_rate"] >= 0, f"r*={iseq['interest_rate']:.4f}")
+    check("IS-LM 均衡验证", islm.verify_on_curves(), "均衡在两条曲线上")
+    fp = islm.fiscal_policy(spending_change=50)
+    mp2 = islm.monetary_policy(money_supply_change=100)
+    check("财政扩张升产出", fp["output_change"] > 0, f"ΔY={fp['output_change']:.2f}")
+    check("货币扩张降利率", mp2["interest_rate_change"] < 0,
+          f"Δr={mp2['interest_rate_change']:.4f}")
+    check("支出乘数=2.5", abs(islm.analyze()["spending_multiplier"] - 2.5) < 1e-6,
+          f"乘数={islm.analyze()['spending_multiplier']}")
+
+
 if __name__ == "__main__":
     verify_agents()
     verify_market()
     verify_micro()
     verify_macro()
     verify_utils()
+    verify_new_models()
     verify_cli()
     passed, failed, total = summarize()
     sys.exit(0 if failed == 0 else 1)

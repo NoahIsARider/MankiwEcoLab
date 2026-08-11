@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mankiwecolab"
-version = "2.0.1"
-description = "曼昆《经济学原理》代码学习项目 - 微观与宏观经济模型的 Python 实现"
+version = "2.1.0"
+description = "An interactive microeconomics and macroeconomics lab built around Mankiw's Principles of Economics"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [{ name = "Mankiw Economics Lab" }]
-keywords = ["economics", "mankiw", "microeconomics", "macroeconomics", "education", "simulation"]
+keywords = ["economics", "mankiw", "microeconomics", "macroeconomics", "education", "simulation", "game-theory", "islm"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Education",
@@ -29,9 +29,16 @@ dependencies = [
     "pandas>=2.0.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/NoahIsARider/MankiwEcoLab"
+Repository = "https://github.com/NoahIsARider/MankiwEcoLab"
+Documentation = "https://github.com/NoahIsARider/MankiwEcoLab/blob/master/USAGE.md"
+
 [project.optional-dependencies]
 test = [
     "pytest>=7.0",
+    "ruff>=0.4.0",
+    "nbclient>=0.9.0",
 ]
 
 [project.scripts]
@@ -50,6 +57,7 @@ addopts = "-v --tb=short"
 [tool.ruff]
 line-length = 100
 target-version = "py39"
+exclude = ["notebooks"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]

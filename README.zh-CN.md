@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/github/stars/NoahIsARider/MankiwEcoLab?style=flat-square&color=yellow" alt="GitHub Stars"/>
   <img src="https://img.shields.io/github/license/NoahIsARider/MankiwEcoLab?style=flat-square&color=blue" alt="License"/>
   <img src="https://img.shields.io/github/actions/workflow/status/NoahIsARider/MankiwEcoLab/ci.yml?style=flat-square" alt="CI"/>
-  <img src="https://img.shields.io/badge/pytest-204%20passed-brightgreen?style=flat-square" alt="Tests"/>
+  <img src="https://img.shields.io/badge/pytest-280%20passed-brightgreen?style=flat-square" alt="Tests"/>
   <img src="https://img.shields.io/badge/PRs-welcome-orange?style=flat-square" alt="PRs Welcome"/>
 </p>
 
@@ -26,9 +26,10 @@
 
 - **覆盖曼昆十大经济学原理** —— 每个原理都有对应的可运行实验
 - **微观 + 宏观全体系** —— 从供给需求均衡到索洛增长模型，一网打尽
+- **进阶模型工具箱** —— 消费者选择理论、博弈论（纳什均衡、古诺）、可贷资金市场、IS-LM 模型
 - **双入口 CLI** —— `--macro` 与 `--demo` 一键演示宏观模型与十大原理
-- **204 个单元与集成测试** —— 每个经济模型都有数学验证，保证正确性
-- **完整可视化** —— 供需曲线、价格收敛、索洛收敛路径、AD-AS 均衡、菲利普斯曲线……
+- **280 个单元与集成测试** —— 每个经济模型都有数学验证，保证正确性
+- **完整可视化** —— 供需曲线、价格收敛、索洛收敛路径、AD-AS 均衡、菲利普斯曲线、IS-LM……
 - **确定性可复现** —— 固定随机种子，实验结果精确可复现
 - **教学友好** —— 中文注释 + 逐行公式推导 + 数学验证测试
 
@@ -40,9 +41,9 @@
 |------|-----------|---------|
 | 1. 人们面临权衡取舍 | 生产可能性边界 PPF | `micro/ppf.py` |
 | 2. 机会成本 | 边际转换率 MRT | `micro/ppf.py` |
-| 3. 理性人考虑边际量 | 边际效用最大化 | `agents/consumer.py` |
+| 3. 理性人考虑边际量 | 边际效用最大化 / 消费者选择 | `agents/consumer.py`, `micro/consumer_choice.py` |
 | 4. 人们会对激励做出反应 | 税收/补贴/价格管制 | `utils/economics.py` |
-| 5. 贸易能使每个人状况更好 | 比较优势与贸易收益 | `micro/trade.py` |
+| 5. 贸易能使每个人状况更好 | 比较优势与贸易收益 / 博弈论 | `micro/trade.py`, `micro/game_theory.py` |
 | 6. 市场通常是组织经济的好方法 | 供需均衡与市场效率 | `market/market.py` |
 | 7. 政府有时可以改善市场结果 | 外部性与庇古税 | `micro/externality.py` |
 | 8. 生活水平取决于生产能力 | GDP 核算与索洛增长 | `macro/gdp.py`, `macro/solow.py` |
@@ -57,7 +58,7 @@
 mankiwecolab/
 ├── main.py                    # CLI 入口 (完整模拟 / 宏观演示 / 十大原理)
 ├── config.py                  # 全部可调参数
-├── experiments.py             # 8 个经典经济学实验
+├── experiments.py             # 10 个经典经济学实验
 ├── agents/                    # 微观主体
 │   ├── consumer.py            #   消费者: 效用函数 + 需求
 │   └── producer.py            #   生产者: 成本函数 + 供给
@@ -68,7 +69,9 @@ mankiwecolab/
 │   ├── ppf.py                 #   生产可能性边界
 │   ├── trade.py               #   比较优势与贸易
 │   ├── externality.py         #   外部性与庇古税
-│   └── market_structure.py    #   完全竞争/寡头/垄断
+│   ├── market_structure.py    #   完全竞争/寡头/垄断
+│   ├── consumer_choice.py     #   预算约束、柯布-道格拉斯效用、最优选择
+│   └── game_theory.py         #   纳什均衡、占优策略、古诺竞争
 ├── macro/                     # 宏观经济学模块
 │   ├── gdp.py                 #   GDP 核算与平减指数
 │   ├── inflation.py           #   CPI 与货币数量论
@@ -76,11 +79,16 @@ mankiwecolab/
 │   ├── solow.py               #   索洛增长模型
 │   ├── money.py               #   货币创造与乘数
 │   ├── ad_as.py               #   总需求-总供给模型
-│   └── phillips.py            #   菲利普斯曲线
+│   ├── phillips.py            #   菲利普斯曲线
+│   ├── loanable_funds.py      #   可贷资金市场与挤出效应
+│   └── islm.py                #   IS-LM 模型
 ├── utils/                     # 工具函数
 │   ├── economics.py           #   基尼系数、福利分析、政策干预
-│   └── visualization.py       #   微观/宏观可视化
-├── tests/                     # 204 个单元与集成测试
+│   ├── visualization.py       #   微观/宏观可视化
+│   └── output.py              #   控制台表格与格式化
+├── notebooks/                 # 交互式 Notebook
+│   └── interactive_lab.ipynb  #   模型工具箱交互演示
+├── tests/                     # 280 个单元与集成测试
 └── output/                    # 运行生成的图表与 CSV 数据
 ```
 
@@ -108,12 +116,19 @@ mankiw-econ                 # 完整微观市场模拟
 mankiw-econ --macro         # 宏观经济学模型演示
 mankiw-econ --demo          # 曼昆十大原理演示
 mankiw-econ --experiments   # 运行全部经济学实验
+mankiw-econ --version       # 显示版本号
 ```
 
 也可以从 [GitHub Releases](https://github.com/NoahIsARider/MankiwEcoLab/releases) 下载 `.whl` 文件安装：
 
 ```bash
-pip install ./mankiwecolab-2.0.1-py3-none-any.whl
+pip install ./mankiwecolab-2.1.0-py3-none-any.whl
+```
+
+也可以从 [GitHub Releases](https://github.com/NoahIsARider/MankiwEcoLab/releases) 下载 `.whl` 文件安装：
+
+```bash
+pip install ./mankiwecolab-2.1.0-py3-none-any.whl
 ```
 
 ### 源码运行（开发模式）
@@ -145,7 +160,7 @@ python main.py
 python main.py --macro
 ```
 
-依次演示 GDP 核算、CPI、失业、索洛增长、货币创造、AD-AS 模型与菲利普斯曲线。
+依次演示 GDP 核算、CPI、失业、索洛增长、货币创造、AD-AS 模型、菲利普斯曲线、可贷资金市场与 IS-LM 模型。
 
 ### 运行曼昆十大原理演示
 
@@ -163,6 +178,14 @@ python experiments.py
 
 ```bash
 python main.py --experiments
+```
+
+十个实验涵盖市场均衡、供需移动、弹性、价格管制、外部性、市场结构、宏观模型、消费者选择与博弈论。
+
+### 交互式 Notebook
+
+```bash
+jupyter notebook notebooks/interactive_lab.ipynb
 ```
 
 ### 运行测试
@@ -184,6 +207,8 @@ pytest tests/
 | 价格收敛过程 | AD-AS 模型均衡 |
 | 市场剩余分配 | 菲利普斯曲线 |
 | 福利分配分析 | 货币创造过程 |
+| 消费者选择与最优组合 | 可贷资金市场 |
+| | IS-LM 均衡 |
 
 所有图表均支持中文标注，详细文档见 [docs/](docs/)。
 
@@ -204,10 +229,11 @@ pytest tests/
 
 ## 🧪 质量保证
 
-本项目通过 **204 个自动化测试** 验证每个经济模型：
+本项目通过 **280 个自动化测试** 验证每个经济模型：
 
-- **数学正确性测试**：边际效用 = 效用函数导数、稳态投资 = 持平投资、黄金律 f'(k) = δ+n……
-- **经济规律测试**：需求随价格下降、供给随价格上升、垄断价格高于竞争价格……
+- **数学正确性测试**：边际效用 = 效用函数导数、稳态投资 = 持平投资、黄金律 f'(k) = δ+n、古诺均衡 q* = (a−c)/(b(n+1))、IS-LM 均衡验证……
+- **经济规律测试**：需求随价格下降、供给随价格上升、垄断价格高于竞争价格、可贷资金市场挤出效应……
+- **博弈论测试**：占优策略均衡、纯/混合策略纳什均衡、帕累托最优……
 - **确定性测试**：相同随机种子产生完全相同的实验结果
 - **集成测试**：完整模拟流程与所有可视化生成
 
@@ -224,7 +250,7 @@ pytest tests/
 3. **完善教程**：在 `docs/tutorials/` 下撰写教学文档
 4. **修复问题**：提交 issue 或 pull request
 
-请确保提交前运行 `pytest tests/` 全部通过。
+请确保提交前运行 `pytest tests/` 全部通过。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ---
 

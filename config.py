@@ -148,3 +148,35 @@ STRUCTURE_DEMAND_INTERCEPT = 100.0  # 市场需求截距
 STRUCTURE_DEMAND_SLOPE = 1.0        # 市场需求斜率
 STRUCTURE_FIRM_MC = 20.0            # 企业边际成本
 STRUCTURE_NUM_FIRMS = 3             # 企业数量
+
+# ==================== 消费者选择理论 ====================
+# 预算约束
+CHOICE_INCOME = 1000.0      # 消费者收入 I
+CHOICE_PRICE_X = 10.0       # 商品 X 价格
+CHOICE_PRICE_Y = 20.0       # 商品 Y 价格
+CHOICE_ALPHA = 0.5          # 柯布-道格拉斯效用参数 α
+
+# ==================== 博弈论 ====================
+# 古诺博弈
+COURNOT_FIRMS = 2               # 企业数量
+COURNOT_DEMAND_INTERCEPT = 100.0  # 市场需求截距
+COURNOT_DEMAND_SLOPE = 1.0        # 市场需求斜率
+COURNOT_MARGINAL_COST = 20.0      # 企业边际成本
+
+# ==================== 可贷资金市场 ====================
+LOANABLE_SAVINGS_AUTONOMOUS = 800.0       # 自主储蓄 S0
+LOANABLE_SAVINGS_SENSITIVITY = 200.0      # 储蓄对利率敏感度 S1
+LOANABLE_INVESTMENT_AUTONOMOUS = 1200.0   # 自主投资 I0
+LOANABLE_INVESTMENT_SENSITIVITY = 400.0   # 投资对利率敏感度 I1
+LOANABLE_GOVERNMENT_BORROWING = 0.0       # 政府借款 G
+
+# ==================== IS-LM 模型 ====================
+ISLM_CONSUMPTION_AUTONOMOUS = 100.0      # 自主消费 a
+ISLM_MPC = 0.8                            # 边际消费倾向 b
+ISLM_TAX_RATE = 0.25                      # 税率 t
+ISLM_INVESTMENT_AUTONOMOUS = 200.0        # 自主投资 d
+ISLM_INVESTMENT_SENSITIVITY = 1000.0      # 投资对利率敏感度 e
+ISLM_GOVERNMENT_SPENDING = 300.0          # 政府购买 G
+ISLM_REAL_MONEY_SUPPLY = 500.0            # 实际货币供给 M/P
+ISLM_MONEY_DEMAND_INCOME = 0.5            # 货币需求收入敏感度 k
+ISLM_MONEY_DEMAND_INTEREST = 200.0        # 货币需求利率敏感度 h

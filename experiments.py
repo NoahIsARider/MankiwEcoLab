@@ -373,6 +373,12 @@ def run_all_experiments():
     # 实验8: 宏观模型
     experiment_8_macro_models()
 
+    # 实验9: 消费者选择
+    experiment_9_consumer_choice()
+
+    # 实验10: 博弈论与寡头
+    experiment_10_game_theory()
+
     print("\n" + "="*70)
     print("所有实验完成!")
     print("="*70 + "\n")
@@ -540,6 +546,116 @@ def experiment_8_macro_models():
 
     print("\n结论: 宏观经济学研究整体经济现象，"
           "包括增长、通胀、失业与短期波动")
+
+
+def experiment_9_consumer_choice():
+    """
+    实验9: 消费者选择理论
+
+    展示预算约束下效用最大化的最优消费组合，
+    以及价格/收入变化如何影响消费决策。
+    """
+    print("\n" + "="*70)
+    print("实验9: 消费者选择理论")
+    print("="*70)
+
+    from micro import BudgetConstraint, CobbDouglasUtility, ConsumerChoice
+
+    budget = BudgetConstraint(income=1000, price_x=10, price_y=20)
+    utility = CobbDouglasUtility(alpha=0.5)
+    choice = ConsumerChoice(budget, utility)
+
+    print("\n预算约束: 10·x + 20·y = 1000 (收入 1000)")
+    print("效用函数: U(x,y) = x^0.5 · y^0.5")
+
+    bundle = choice.optimal_bundle()
+    print("\n最优消费组合:")
+    print(f"  x* = {bundle['x']:.2f}, y* = {bundle['y']:.2f}")
+    print(f"  效用 = {bundle['utility']:.2f}")
+    print(f"  总支出 = {bundle['expenditure']:.2f}")
+
+    analysis = choice.analyze()
+    print("\n相切条件验证:")
+    print(f"  MRS = {analysis['mrs']:.4f}")
+    print(f"  Px/Py = {analysis['price_ratio']:.4f}")
+    print(f"  相切条件满足: {choice.verify_tangency()}")
+    print(f"  预算约束满足: {choice.verify_budget_satisfied()}")
+
+    # 价格变化的影响
+    print("\n价格变化的影响 (X 价格从 10 涨到 15):")
+    budget2 = BudgetConstraint(income=1000, price_x=15, price_y=20)
+    choice2 = ConsumerChoice(budget2, utility)
+    bundle2 = choice2.optimal_bundle()
+    print(f"  新最优组合: x* = {bundle2['x']:.2f}, y* = {bundle2['y']:.2f}")
+    print(f"  X 消费减少: {bundle['x']:.2f} → {bundle2['x']:.2f} (需求定律)")
+
+    # 收入变化的影响
+    print("\n收入变化的影响 (收入从 1000 涨到 1500):")
+    budget3 = BudgetConstraint(income=1500, price_x=10, price_y=20)
+    choice3 = ConsumerChoice(budget3, utility)
+    bundle3 = choice3.optimal_bundle()
+    print(f"  新最优组合: x* = {bundle3['x']:.2f}, y* = {bundle3['y']:.2f}")
+    print("  两种商品消费均增加 (正常商品)")
+
+    print("\n结论: 消费者在预算线上选择使 MRS = Px/Py 的最优点，"
+          "价格上升减少消费，收入上升增加消费")
+
+
+def experiment_10_game_theory():
+    """
+    实验10: 博弈论与寡头竞争
+
+    展示囚徒困境、纳什均衡与古诺寡头竞争。
+    """
+    print("\n" + "="*70)
+    print("实验10: 博弈论与寡头竞争")
+    print("="*70)
+
+    from micro import CournotGame, prisoners_dilemma
+
+    # 囚徒困境
+    print("\n场景A: 囚徒困境")
+    pd = prisoners_dilemma()
+    print("收益矩阵 (A, B):")
+    print(f"  [沉默, 沉默]: {pd.payoff(0, 0)}")
+    print(f"  [沉默, 招供]: {pd.payoff(0, 1)}")
+    print(f"  [招供, 沉默]: {pd.payoff(1, 0)}")
+    print(f"  [招供, 招供]: {pd.payoff(1, 1)}")
+
+    dom = pd.dominant_strategies()
+    print(f"\n占优策略: A -> {dom['A']}, B -> {dom['B']}")
+    print(f"占优策略均衡存在: {pd.has_dominant_strategy_equilibrium()}")
+
+    nash = pd.pure_nash_equilibria()
+    print(f"纳什均衡: {nash[0]['A_strategy']}/{nash[0]['B_strategy']}, "
+          f"收益 {nash[0]['payoff']}")
+
+    pareto = pd.pareto_optimal()
+    print(f"帕累托最优组合数: {len(pareto)} (合作 {pd.strategies_a[0]}"
+          f"/{pd.strategies_b[0]} 是帕累托最优但非纳什均衡)")
+
+    # 古诺竞争
+    print("\n场景B: 古诺寡头竞争")
+    cg = CournotGame(num_firms=2, demand_intercept=100,
+                     demand_slope=1, marginal_cost=20)
+    print("市场需求: P = 100 - Q, 边际成本: MC = 20")
+    print("\n两企业纳什均衡:")
+    print(f"  每企业产量: {cg.nash_equilibrium()['per_firm_output']:.2f}")
+    print(f"  总产量: {cg.nash_equilibrium()['total_output']:.2f}")
+    print(f"  价格: {cg.nash_equilibrium()['price']:.2f}")
+    print(f"  每企业利润: {cg.nash_equilibrium()['per_firm_profit']:.2f}")
+
+    print("\n串谋 (卡特尔):")
+    print(f"  总产量: {cg.collusion_output()['total_output']:.2f}")
+    print(f"  价格: {cg.collusion_output()['price']:.2f}")
+    print(f"  总利润: {cg.collusion_output()['total_profit']:.2f}")
+
+    print("\n完全竞争:")
+    print(f"  总产量: {cg.competitive_output()['total_output']:.2f}")
+    print(f"  价格: {cg.competitive_output()['price']:.2f}")
+
+    print("\n结论: 寡头之间既有串谋的激励又相互竞争，纳什均衡介于"
+          "垄断与完全竞争之间；囚徒困境揭示了自利行为可能阻碍合作")
 
 
 if __name__ == "__main__":

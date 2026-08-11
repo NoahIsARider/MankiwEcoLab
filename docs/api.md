@@ -16,6 +16,8 @@
 | | `trade.py` | 比较优势与贸易 |
 | | `externality.py` | 外部性模型 |
 | | `market_structure.py` | 市场结构分析 |
+| | `consumer_choice.py` | 消费者选择理论 |
+| | `game_theory.py` | 博弈论与古诺竞争 |
 | `macro` | `gdp.py` | GDP 核算 |
 | | `inflation.py` | CPI 与货币数量论 |
 | | `unemployment.py` | 劳动力市场 |
@@ -23,8 +25,11 @@
 | | `money.py` | 货币创造 |
 | | `ad_as.py` | AD-AS 模型 |
 | | `phillips.py` | 菲利普斯曲线 |
+| | `loanable_funds.py` | 可贷资金市场 |
+| | `islm.py` | IS-LM 模型 |
 | `utils` | `economics.py` | 经济学工具函数 |
 | | `visualization.py` | 可视化类 |
+| | `output.py` | 控制台输出工具 |
 
 ---
 
@@ -147,6 +152,57 @@
 - `deadweight_loss()`: 无谓损失
 - `analyze()`: 完整报告
 
+### `BudgetConstraint(income, price_x, price_y)`
+
+属性: `max_x`, `max_y`, `slope`
+方法:
+- `max_y_at(x)`: 给定 x 的最大可负担 y
+- `affordable(x, y)`: 组合是否在预算内
+- `on_budget_line(x, y)`: 组合是否在预算线上
+- `budget_line(n=100)`: 预算线绘图点
+
+### `CobbDouglasUtility(alpha)`
+
+方法:
+- `utility(x, y)`: `U = x^α · y^(1-α)`
+- `marginal_utility_x(x, y)` / `marginal_utility_y(x, y)`: 边际效用
+- `marginal_rate_of_substitution(x, y)`: `MRS = [α/(1-α)]·(y/x)`
+- `indifference_curve_y(x, u)`: 无差异曲线
+
+### `ConsumerChoice(budget, utility)`
+
+方法:
+- `optimal_bundle()`: 最优组合 `x*=αI/Px, y*=(1-α)I/Py`
+- `verify_tangency()`: 相切条件 MRS = Px/Py
+- `verify_budget_satisfied()`: 预算约束验证
+- `demand_curve(good, price_range)`: 需求曲线
+- `engel_curve(good, income_range)`: 恩格尔曲线
+- `analyze()`: 完整报告
+
+### `NormalFormGame(payoff_a, payoff_b, strategies_a, strategies_b)`
+
+方法:
+- `payoff(i, j)`: 双方收益
+- `dominant_strategies()`: 占优策略
+- `has_dominant_strategy_equilibrium()`: 占优策略均衡
+- `pure_nash_equilibria()`: 纯策略纳什均衡
+- `mixed_strategy_equilibrium()`: 混合策略纳什均衡
+- `pareto_optimal()`: 帕累托最优组合
+- `analyze()`: 完整报告
+
+工厂函数:
+- `prisoners_dilemma()`: 囚徒困境
+- `matching_pennies()`: 猜硬币博弈 (仅混合均衡)
+
+### `CournotGame(num_firms, demand_intercept, demand_slope, marginal_cost)`
+
+方法:
+- `best_response(other_output)`: 最优反应函数
+- `nash_equilibrium()`: 纳什均衡 `q* = (a-c)/(b(n+1))`
+- `collusion_output()`: 串谋产出
+- `competitive_output()`: 完全竞争产出
+- `analyze()`: 完整报告
+
 ---
 
 ## macro
@@ -211,6 +267,29 @@
 - `curve_points()`: 曲线点
 - `analyze()`: 完整报告
 
+### `LoanableFundsModel(savings_autonomous, savings_sensitivity, investment_autonomous, investment_sensitivity, government_borrowing)`
+
+方法:
+- `savings(r)`: 储蓄供给 `S = S0 + S1·r`
+- `investment(r)`: 投资需求 `I = I0 - I1·r`
+- `excess_demand(r)`: 可贷资金超额需求
+- `equilibrium_rate()`: 均衡利率
+- `equilibrium()`: 均衡状态
+- `with_fiscal_policy(additional_borrowing)`: 财政政策与挤出效应
+- `with_tax_incentive(savings_increase)`: 税收激励
+- `analyze()`: 完整报告
+
+### `ISLMModel(consumption_autonomous, marginal_propensity_to_consume, tax_rate, investment_autonomous, investment_sensitivity, government_spending, real_money_supply, money_demand_income, money_demand_interest)`
+
+方法:
+- `is_curve(r)`: IS 曲线上的产出
+- `lm_curve(r)`: LM 曲线上的产出
+- `equilibrium()`: 联立均衡 (Y*, r*)
+- `verify_on_curves()`: 均衡是否同时在两条曲线上
+- `fiscal_policy(spending_change)`: 财政政策
+- `monetary_policy(money_supply_change)`: 货币政策
+- `analyze()`: 完整报告 (含支出乘数)
+
 ---
 
 ## utils
@@ -232,5 +311,14 @@
 
 - `EconomicsVisualizer(output_dir, figure_size, dpi, style)`: 微观可视化
   - `generate_report(market, consumers, producers)`: 生成全部图表
+  - `plot_consumer_choice(choice)`: 消费者选择图
 - `MacroVisualizer(output_dir, dpi, style)`: 宏观可视化
-  - `generate_macro_report(solow, adas, phillips, money)`: 生成宏观图表
+  - `generate_macro_report(solow, adas, phillips, money, loanable_funds=None, islm=None)`: 生成宏观图表
+  - `plot_loanable_funds(model)`: 可贷资金市场图
+  - `plot_islm(model)`: IS-LM 均衡图
+
+### output 模块
+
+- `print_table(columns, rows, title=None, float_precision=2)`: 对齐 ASCII 表格
+- `print_section(title, width=70, char='=')`: 分隔标题
+- `format_pct(value, precision=2)`: 百分比格式化

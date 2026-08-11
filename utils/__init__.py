@@ -1,6 +1,6 @@
 """
 工具模块
-Utils Module - Economic functions and visualization
+Utils Module - Economic functions, visualization and console output
 """
 
 from .economics import (
@@ -15,6 +15,7 @@ from .economics import (
     create_agents,
     simulate_policy_intervention,
 )
+from .output import format_pct, print_section, print_table
 from .visualization import EconomicsVisualizer, MacroVisualizer
 
 __all__ = [
@@ -30,4 +31,7 @@ __all__ = [
     'simulate_policy_intervention',
     'EconomicsVisualizer',
     'MacroVisualizer',
+    'print_table',
+    'print_section',
+    'format_pct',
 ]

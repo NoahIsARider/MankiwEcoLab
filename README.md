@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/github/stars/NoahIsARider/MankiwEcoLab?style=flat-square&color=yellow" alt="GitHub Stars"/>
   <img src="https://img.shields.io/github/license/NoahIsARider/MankiwEcoLab?style=flat-square&color=blue" alt="License"/>
   <img src="https://img.shields.io/github/actions/workflow/status/NoahIsARider/MankiwEcoLab/ci.yml?style=flat-square" alt="CI"/>
-  <img src="https://img.shields.io/badge/pytest-204%20passed-brightgreen?style=flat-square" alt="Tests"/>
+  <img src="https://img.shields.io/badge/pytest-280%20passed-brightgreen?style=flat-square" alt="Tests"/>
   <img src="https://img.shields.io/badge/PRs-welcome-orange?style=flat-square" alt="PRs Welcome"/>
 </p>
 
@@ -24,11 +24,12 @@ This project takes the classic models in Mankiw's *Principles of Economics* text
 
 - **Covers Mankiw's ten principles of economics** — every principle has a corresponding runnable experiment
 - **Complete micro + macro system** — from supply-demand equilibrium to the Solow growth model, all covered
+- **Advanced model toolbox** — consumer choice theory, game theory (Nash equilibrium, Cournot), loanable funds market, and the IS-LM model
 - **Dual-entry CLI** — `--macro` and `--demo` demo the macro models and the ten principles with one command
-- **204 unit and integration tests** — every economic model is mathematically verified for correctness
-- **Full visualization** — supply/demand curves, price convergence, Solow convergence paths, AD-AS equilibrium, Phillips curve…
+- **280 unit and integration tests** — every economic model is mathematically verified for correctness
+- **Full visualization** — supply/demand curves, price convergence, Solow convergence paths, AD-AS equilibrium, Phillips curve, IS-LM…
 - **Deterministic and reproducible** — fixed random seeds make experimental results exactly reproducible
-- **Teaching-friendly** — Chinese comments + line-by-line formula derivations + mathematical verification tests
+- **Teaching-friendly** — comments + line-by-line formula derivations + mathematical verification tests
 
 ---
 
@@ -38,9 +39,9 @@ This project takes the classic models in Mankiw's *Principles of Economics* text
 |------|-----------|---------|
 | 1. People face trade-offs | Production possibilities frontier (PPF) | `micro/ppf.py` |
 | 2. The cost of something is what you give up to get it | Marginal rate of transformation (MRT) | `micro/ppf.py` |
-| 3. Rational people think at the margin | Marginal utility maximization | `agents/consumer.py` |
+| 3. Rational people think at the margin | Marginal utility maximization / consumer choice | `agents/consumer.py`, `micro/consumer_choice.py` |
 | 4. People respond to incentives | Taxes / subsidies / price controls | `utils/economics.py` |
-| 5. Trade can make everyone better off | Comparative advantage and gains from trade | `micro/trade.py` |
+| 5. Trade can make everyone better off | Comparative advantage, gains from trade & game theory | `micro/trade.py`, `micro/game_theory.py` |
 | 6. Markets are usually a good way to organize economic activity | Supply-demand equilibrium and market efficiency | `market/market.py` |
 | 7. Governments can sometimes improve market outcomes | Externalities and Pigouvian taxes | `micro/externality.py` |
 | 8. A country's standard of living depends on its ability to produce goods and services | GDP accounting and Solow growth | `macro/gdp.py`, `macro/solow.py` |
@@ -55,7 +56,7 @@ This project takes the classic models in Mankiw's *Principles of Economics* text
 mankiwecolab/
 ├── main.py                    # CLI entry (full simulation / macro demo / ten principles)
 ├── config.py                  # All tunable parameters
-├── experiments.py             # 8 classic economics experiments
+├── experiments.py             # 10 classic economics experiments
 ├── agents/                    # Microeconomic agents
 │   ├── consumer.py            #   Consumer: utility function + demand
 │   └── producer.py            #   Producer: cost function + supply
@@ -66,7 +67,9 @@ mankiwecolab/
 │   ├── ppf.py                 #   Production possibilities frontier
 │   ├── trade.py               #   Comparative advantage and trade
 │   ├── externality.py         #   Externalities and Pigouvian taxes
-│   └── market_structure.py    #   Perfect competition / oligopoly / monopoly
+│   ├── market_structure.py    #   Perfect competition / oligopoly / monopoly
+│   ├── consumer_choice.py     #   Budget constraint, Cobb-Douglas utility, optimal choice
+│   └── game_theory.py         #   Nash equilibrium, dominant strategies, Cournot oligopoly
 ├── macro/                     # Macroeconomics modules
 │   ├── gdp.py                 #   GDP accounting and deflator
 │   ├── inflation.py           #   CPI and the quantity theory of money
@@ -74,11 +77,16 @@ mankiwecolab/
 │   ├── solow.py               #   Solow growth model
 │   ├── money.py               #   Money creation and multiplier
 │   ├── ad_as.py               #   Aggregate demand – aggregate supply model
-│   └── phillips.py            #   Phillips curve
+│   ├── phillips.py            #   Phillips curve
+│   ├── loanable_funds.py      #   Loanable funds market and crowding out
+│   └── islm.py                #   IS-LM model of output and interest rates
 ├── utils/                     # Utility functions
 │   ├── economics.py           #   Gini coefficient, welfare analysis, policy interventions
-│   └── visualization.py       #   Micro/macro visualization
-├── tests/                     # 204 unit and integration tests
+│   ├── visualization.py       #   Micro/macro visualization
+│   └── output.py              #   Console table and formatting helpers
+├── notebooks/                 # Interactive Jupyter labs
+│   └── interactive_lab.ipynb  #   Hands-on tour of the model toolbox
+├── tests/                     # 280 unit and integration tests
 └── output/                    # Charts and CSV data generated at runtime
 ```
 
@@ -92,7 +100,7 @@ mankiwecolab/
 pip install mankiwecolab
 ```
 
-> Domestic mirrors (Tencent Cloud, Tsinghua, etc.) may have a sync delay for new packages. If installation fails, temporarily use the official index:
+> New versions may take a few hours to appear on regional PyPI mirrors. If the install fails, fall back to the official index:
 >
 > ```bash
 > pip install -i https://pypi.org/simple mankiwecolab
@@ -106,12 +114,13 @@ mankiw-econ                 # Full microeconomic market simulation
 mankiw-econ --macro         # Macroeconomics model demo
 mankiw-econ --demo          # Mankiw's ten principles demo
 mankiw-econ --experiments   # Run all economics experiments
+mankiw-econ --version       # Show the installed version
 ```
 
 You can also download the `.whl` file from [GitHub Releases](https://github.com/NoahIsARider/MankiwEcoLab/releases) and install it:
 
 ```bash
-pip install ./mankiwecolab-2.0.1-py3-none-any.whl
+pip install ./mankiwecolab-2.1.0-py3-none-any.whl
 ```
 
 ### Run from Source (development mode)
@@ -121,12 +130,6 @@ git clone https://github.com/NoahIsARider/MankiwEcoLab.git
 cd MankiwEcoLab
 pip install -r requirements.txt
 python main.py
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
 ```
 
 ### Run the Full Market Simulation
@@ -143,7 +146,7 @@ Simulates a market with 1,000 consumers and 200 producers; observe how prices gr
 python main.py --macro
 ```
 
-Walks through GDP accounting, CPI, unemployment, Solow growth, money creation, the AD-AS model, and the Phillips curve in sequence.
+Walks through GDP accounting, CPI, unemployment, Solow growth, money creation, the AD-AS model, the Phillips curve, the loanable funds market, and the IS-LM model in sequence.
 
 ### Run Mankiw's Ten Principles Demo
 
@@ -162,6 +165,16 @@ or:
 ```bash
 python main.py --experiments
 ```
+
+The ten experiments cover market equilibrium, demand/supply shifts, elasticity, price controls, externalities, market structure, macro models, consumer choice, and game theory.
+
+### Interactive Jupyter Notebooks
+
+```bash
+jupyter notebook notebooks/interactive_lab.ipynb
+```
+
+A self-contained, parameterized tour of consumer choice, game theory, the loanable funds market, and the IS-LM model.
 
 ### Run the Tests
 
@@ -182,8 +195,10 @@ pytest tests/
 | Price convergence process | AD-AS model equilibrium |
 | Market surplus distribution | Phillips curve |
 | Welfare distribution analysis | Money creation process |
+| Consumer choice and optimal bundle | Loanable funds market |
+| | IS-LM equilibrium |
 
-All charts support Chinese labels; see [docs/](docs/) for detailed documentation.
+See [docs/](docs/) for detailed documentation.
 
 ---
 
@@ -202,10 +217,11 @@ All charts support Chinese labels; see [docs/](docs/) for detailed documentation
 
 ## 🧪 Quality Assurance
 
-This project verifies every economic model with **204 automated tests**:
+This project verifies every economic model with **280 automated tests**:
 
-- **Mathematical correctness tests**: marginal utility = derivative of the utility function, steady-state investment = break-even investment, golden rule f'(k) = δ+n…
-- **Economic law tests**: demand falls as price rises, supply rises as price rises, monopoly prices are higher than competitive prices…
+- **Mathematical correctness tests**: marginal utility = derivative of the utility function, steady-state investment = break-even investment, golden rule f'(k) = δ+n, Cournot equilibrium q* = (a−c)/(b(n+1)), IS-LM equilibrium verification…
+- **Economic law tests**: demand falls as price rises, supply rises as price rises, monopoly prices are higher than competitive prices, crowding out in the loanable funds market…
+- **Game theory tests**: dominant strategy equilibrium, pure and mixed Nash equilibria, Pareto optimality…
 - **Determinism tests**: identical random seeds produce exactly identical experimental results
 - **Integration tests**: complete simulation flows and generation of all visualizations
 
@@ -222,7 +238,7 @@ Any form of contribution is welcome!
 3. **Improve tutorials**: write teaching documentation under `docs/tutorials/`
 4. **Fix issues**: submit an issue or pull request
 
-Please make sure `pytest tests/` passes before submitting.
+Please make sure `pytest tests/` passes before submitting. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 
@@ -240,5 +256,5 @@ Please make sure `pytest tests/` passes before submitting.
 - Varian, *Intermediate Microeconomics*
 
 <p align="center">
-  <sub>Built with ❤️ for economics learners around the world</sub>
+  <sub>Built with love for economics learners around the world</sub>
 </p>

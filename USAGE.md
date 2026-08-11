@@ -42,22 +42,30 @@ python main.py --demo
 python experiments.py
 ```
 
-运行 8 个经济学实验（供需均衡、需求/供给移动、弹性、价格管制、外部性、市场结构、宏观模型）。
+运行 10 个经济学实验（供需均衡、需求/供给移动、弹性、价格管制、外部性、市场结构、宏观模型、消费者选择、博弈论与寡头）。
 
-### 6. 运行测试
+### 6. 交互式 Notebook
+
+```bash
+jupyter notebook notebooks/interactive_lab.ipynb
+```
+
+交互式演示消费者选择、博弈论、可贷资金市场与 IS-LM 模型。
+
+### 7. 运行测试
 
 ```bash
 python -m pytest tests/ -q
 ```
 
-204 个单元与集成测试，覆盖全部模型。
+280 个单元与集成测试，覆盖全部模型。
 
 ## 命令行接口
 
 ```
 usage: main.py [-h] [--rounds ROUNDS] [--consumers CONSUMERS]
                [--producers PRODUCERS] [--seed SEED] [--macro]
-               [--demo] [--experiments]
+               [--demo] [--experiments] [--version]
 
 可选参数:
   --rounds N        市场交易轮次 (默认 100)
@@ -67,6 +75,7 @@ usage: main.py [-h] [--rounds ROUNDS] [--consumers CONSUMERS]
   --macro           运行宏观经济学演示
   --demo            运行十大原理演示
   --experiments     运行全部经济学实验
+  --version         显示版本号
 ```
 
 ## 配置参数
@@ -173,6 +182,73 @@ print(f"消费者剩余基尼系数: {calculate_gini_coefficient(surpluses):.4f}
 population, cumulative = calculate_lorenz_curve(surpluses)  # 洛伦兹曲线
 ```
 
+### 示例5: 消费者选择理论
+
+```python
+from micro import BudgetConstraint, CobbDouglasUtility, ConsumerChoice
+
+budget = BudgetConstraint(income=1000, price_x=10, price_y=20)
+utility = CobbDouglasUtility(alpha=0.5)
+choice = ConsumerChoice(budget, utility)
+
+bundle = choice.optimal_bundle()
+print(f"最优组合: x*={bundle['x']:.2f}, y*={bundle['y']:.2f}")
+print(f"相切条件满足: {choice.verify_tangency()}")
+
+# 需求曲线与恩格尔曲线
+prices, quantities = choice.demand_curve('x', price_range=(5, 20))
+incomes, engel_q = choice.engel_curve('x', income_range=(500, 2000))
+```
+
+### 示例6: 博弈论与古诺竞争
+
+```python
+from micro import prisoners_dilemma, CournotGame
+
+pd = prisoners_dilemma()
+nash = pd.pure_nash_equilibria()
+print(f"囚徒困境纳什均衡: {nash[0]['A_strategy']}/{nash[0]['B_strategy']}")
+
+cg = CournotGame(num_firms=2, demand_intercept=100, demand_slope=1, marginal_cost=20)
+eq = cg.nash_equilibrium()
+print(f"古诺均衡: 每企业产量 {eq['per_firm_output']:.2f}, 价格 {eq['price']:.2f}")
+
+# 混合策略均衡
+from micro import matching_pennies
+mp = matching_pennies()
+print(f"猜硬币混合均衡: p={mp.mixed_strategy_equilibrium()['p']:.2f}")
+```
+
+### 示例7: 可贷资金市场
+
+```python
+from macro import LoanableFundsModel
+
+lf = LoanableFundsModel(
+    savings_autonomous=800, savings_sensitivity=200,
+    investment_autonomous=1200, investment_sensitivity=400,
+    government_borrowing=0,
+)
+print(f"均衡利率: {lf.equilibrium_rate():.2%}")
+
+fiscal = lf.with_fiscal_policy(additional_borrowing=200)
+print(f"财政扩张后挤出效应: {fiscal['crowding_out']:.2f}")
+```
+
+### 示例8: IS-LM 模型
+
+```python
+from macro import ISLMModel
+
+islm = ISLMModel()
+eq = islm.equilibrium()
+print(f"IS-LM 均衡: Y={eq['output']:.2f}, r={eq['interest_rate']:.2%}")
+
+fp = islm.fiscal_policy(spending_change=50)
+mp = islm.monetary_policy(money_supply_change=100)
+print(f"财政扩张 ΔY={fp['output_change']:.2f}, 货币扩张 ΔY={mp['output_change']:.2f}")
+```
+
 ## 核心概念解释
 
 ### 1. 效用函数
@@ -206,6 +282,8 @@ MC(q) = a + b·q
 - 索洛稳态: `k* = [s·A/(δ+n)]^(1/(1-α))`
 - 货币乘数: `m = 1/(r+c)`
 - 菲利普斯曲线: `π = πᵉ - β·(u-u_n)`
+- 可贷资金均衡: `S0 + S1·r = I0 - I1·r + G`
+- IS-LM 均衡: 商品市场 `Y = C+I+G` 与货币市场 `M/P = L(Y,r)` 联立
 
 详细推导见 `docs/models.md`。
 
@@ -232,6 +310,11 @@ MC(q) = a + b·q
 - `ad_as_model.png`: AD-AS 模型
 - `phillips_curve.png`: 菲利普斯曲线
 - `money_creation.png`: 货币创造过程
+- `loanable_funds.png`: 可贷资金市场与挤出效应
+- `islm_model.png`: IS-LM 均衡
+
+微观模型也可单独生成:
+- `consumer_choice.png`: 消费者选择与最优组合
 
 ## 常见问题
 
