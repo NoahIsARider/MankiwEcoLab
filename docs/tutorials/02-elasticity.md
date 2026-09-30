@@ -1,68 +1,68 @@
-# 教程 2: 价格弹性
+# Tutorial 2: Price Elasticity
 
-> 对应曼昆《经济学原理》第5章。
-> 关联代码: `market/equilibrium.py`, `utils/economics.py`
+> Corresponds to Chapter 5 of Mankiw's *Principles of Economics*.
+> Related code: `market/equilibrium.py`, `utils/economics.py`
 
-## 概念回顾
+## Concept Review
 
-**需求价格弹性**: 需求量对价格变化的反应程度。
+**Price elasticity of demand**: How responsive the quantity demanded is to a change in price.
 
 ```
 ε = (ΔQ/Q) / (ΔP/P) = (dQ/dP) × (P/Q)
 ```
 
-| 弹性值 | 类型 | 含义 |
+| Elasticity value | Type | Meaning |
 |--------|------|------|
-| \|ε\| > 1 | 弹性需求 | 需求量对价格敏感 |
-| \|ε\| = 1 | 单位弹性 | 总支出不变 |
-| \|ε\| < 1 | 非弹性需求 | 需求量对价格不敏感 |
+| \|ε\| > 1 | Elastic demand | Quantity demanded is sensitive to price |
+| \|ε\| = 1 | Unit elastic | Total expenditure is unchanged |
+| \|ε\| < 1 | Inelastic demand | Quantity demanded is insensitive to price |
 
-**收入与弹性的关系**:
-- 必需品 (如食物): 非弹性
-- 奢侈品 (如珠宝): 弹性
+**Relationship between income and elasticity**:
+- Necessities (e.g., food): inelastic
+- Luxuries (e.g., jewelry): elastic
 
-## 运行实验
+## Running the Experiment
 
 ```bash
 python experiments.py
 ```
 
-实验4会比较必需品和奢侈品的需求弹性差异。
+Experiment 4 compares the difference in demand elasticity between necessities and luxuries.
 
-## 代码计算
+## Computing with Code
 
 ```python
 from market.equilibrium import calculate_elasticity, classify_elasticity
 
-# 需求函数: q = 100 - 2p
+# Demand function: q = 100 - 2p
 def demand(p):
     return max(0.0, 100 - 2 * p)
 
-# 在不同价格点计算弹性
+# Compute elasticity at different price points
 for price in [10, 25, 40]:
     e = calculate_elasticity(demand, price)
-    print(f"价格 {price}: 弹性 = {e:.3f}, 类型 = {classify_elasticity(e)}")
+    print(f"Price {price}: elasticity = {e:.3f}, type = {classify_elasticity(e)}")
 ```
 
-## 中点法
+## Midpoint Method
 
-对于离散的价格-数量数据，使用中点法:
+For discrete price-quantity data, use the midpoint method:
 
 ```python
 from utils.economics import calculate_price_elasticity_of_demand
 
-# 价格从 10 升至 12，数量从 100 降至 80
+# Price rises from 10 to 12, quantity falls from 100 to 80
 e = calculate_price_elasticity_of_demand([10, 12], [100, 80])
-print(f"中点法弹性: {e:.3f}")
+print(f"Midpoint-method elasticity: {e:.3f}")
 ```
 
-## 观察要点
+## What to Observe
 
-1. 线性需求曲线上，不同点的弹性不同 (上部弹性，下部非弹性)
-2. 弹性与总支出 (P×Q) 的关系
-3. 必需品 vs 奢侈品在相同价格变动下的反应差异
+1. Along a linear demand curve, elasticity differs from point to point (elastic in the upper part, inelastic in the lower part)
+2. The relationship between elasticity and total expenditure (P×Q)
+3. How necessities vs. luxuries respond differently to the same price change
 
-## 思考题
+## Discussion Questions
 
-- 为什么"谷贱伤农"？这与弹性有什么关系？
-- 税收负担在弹性不同的市场上如何分配？
+- Why "a good harvest hurts the farmer"? What does this have to do with elasticity?
+- How is the tax burden distributed across markets with different elasticities?

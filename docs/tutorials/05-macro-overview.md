@@ -1,26 +1,26 @@
-# 教程 5: 宏观经济学导览
+# Tutorial 5: Macroeconomics Overview
 
-> 对应曼昆《经济学原理》宏观分册，以及十大原理 8、9、10。
-> 关联代码: `macro/` 整个包
+> Corresponds to the macro volume of Mankiw's *Principles of Economics*, and to Ten Principles 8, 9, and 10.
+> Related code: the entire `macro/` package
 
-## 概述
+## Overview
 
-宏观经济学研究整体经济现象，包括:
-- 经济总量 (GDP)
-- 物价水平 (CPI, 通胀)
-- 就业状况 (失业率)
-- 经济增长 (索洛模型)
-- 短期波动 (AD-AS, 菲利普斯曲线)
+Macroeconomics studies economy-wide phenomena, including:
+- Aggregate output (GDP)
+- The price level (CPI, inflation)
+- Employment conditions (unemployment rate)
+- Economic growth (Solow model)
+- Short-run fluctuations (AD-AS, Phillips curve)
 
-## 运行宏观演示
+## Running the Macro Demo
 
 ```bash
 python main.py --macro
 ```
 
-## 逐个模型
+## Model by Model
 
-### 1. GDP 核算 (原理 8)
+### 1. GDP Accounting (Principle 8)
 
 ```python
 from macro import GDPAccounts
@@ -31,7 +31,7 @@ print(f"GDP = {gdp.gdp:.2f}")
 print(gdp.analyze()['interpretation'])
 ```
 
-### 2. CPI 与通货膨胀 (原理 9)
+### 2. CPI and Inflation (Principle 9)
 
 ```python
 from macro import CPI, inflation_rate
@@ -39,10 +39,10 @@ from macro import CPI, inflation_rate
 cpi = CPI(base_prices=[10, 20, 30], base_quantities=[4, 3, 2])
 current_cpi = cpi.compute([12, 22, 31])
 print(f"CPI = {current_cpi:.2f}")
-print(f"通胀率 = {inflation_rate(100, current_cpi):.2f}%")
+print(f"Inflation rate = {inflation_rate(100, current_cpi):.2f}%")
 ```
 
-### 3. 货币数量论 (原理 9)
+### 3. Quantity Theory of Money (Principle 9)
 
 ```python
 from macro import QuantityTheory
@@ -50,22 +50,22 @@ from macro import QuantityTheory
 qt1 = QuantityTheory(money_supply=1000, velocity=5, real_output=100)
 qt2 = QuantityTheory(money_supply=2000, velocity=5, real_output=100)
 print(f"M=1000 => P={qt1.price_level():.2f}")
-print(f"M=2000 => P={qt2.price_level():.2f}  (货币翻倍,物价翻倍)")
+print(f"M=2000 => P={qt2.price_level():.2f}  (money doubles, prices double)")
 ```
 
-### 4. 失业分析
+### 4. Unemployment Analysis
 
 ```python
 from macro import LaborMarketStats, unemployment_decomposition
 
 labor = LaborMarketStats(adult_population=10000, employed=9000, unemployed=500)
-print(f"失业率: {labor.unemployment_rate():.2f}%")
+print(f"Unemployment rate: {labor.unemployment_rate():.2f}%")
 
 decomp = unemployment_decomposition(5.5, 2.0, 2.5)
 print(decomp['interpretation'])
 ```
 
-### 5. 索洛增长模型 (原理 8)
+### 5. Solow Growth Model (Principle 8)
 
 ```python
 from macro import SolowGrowthModel
@@ -73,50 +73,50 @@ from macro import SolowGrowthModel
 solow = SolowGrowthModel(alpha=0.3, savings_rate=0.2,
                          depreciation_rate=0.05, population_growth_rate=0.01)
 analysis = solow.analyze()
-print(f"稳态人均资本: {analysis['steady_state']['k']:.2f}")
-print(f"黄金律资本: {analysis['golden_rule']['k_gold']:.2f}")
+print(f"Steady-state capital per worker: {analysis['steady_state']['k']:.2f}")
+print(f"Golden-rule capital: {analysis['golden_rule']['k_gold']:.2f}")
 ```
 
-### 6. 货币创造
+### 6. Money Creation
 
 ```python
 from macro import MoneyCreationModel
 
 money = MoneyCreationModel(reserve_ratio=0.10, initial_deposit=1000)
-print(f"货币乘数: {money.money_multiplier:.2f}")
-print(f"货币供给: {money.total_money_supply:.2f}")
+print(f"Money multiplier: {money.money_multiplier:.2f}")
+print(f"Money supply: {money.total_money_supply:.2f}")
 ```
 
-### 7. AD-AS 模型
+### 7. AD-AS Model
 
 ```python
 from macro import ADASModel
 
 adas = ADASModel()
 analysis = adas.analyze()
-print(f"短期均衡: Y={analysis['short_run']['output']:.2f}, "
+print(f"Short-run equilibrium: Y={analysis['short_run']['output']:.2f}, "
       f"P={analysis['short_run']['price']:.2f}")
-print(f"产出缺口: {analysis['output_gap']:+.2f}")
+print(f"Output gap: {analysis['output_gap']:+.2f}")
 ```
 
-### 8. 菲利普斯曲线 (原理 10)
+### 8. Phillips Curve (Principle 10)
 
 ```python
 from macro import PhillipsCurve
 
 pc = PhillipsCurve(expected_inflation=3.0, beta=0.5, natural_unemployment_rate=5.0)
-print(f"失业率 4% => 通胀 {pc.inflation_at(4.0):.2f}%")
-print(f"失业率 6% => 通胀 {pc.inflation_at(6.0):.2f}%")
+print(f"Unemployment 4% => inflation {pc.inflation_at(4.0):.2f}%")
+print(f"Unemployment 6% => inflation {pc.inflation_at(6.0):.2f}%")
 ```
 
-## 宏观经济学四大核心问题
+## The Four Core Questions of Macroeconomics
 
-1. **增长**: 什么决定了长期生活水平? (索洛模型)
-2. **通胀**: 为什么物价会上升? (货币数量论)
-3. **失业**: 为什么有人找不到工作? (失业分解)
-4. **波动**: 为什么经济有周期? (AD-AS, 菲利普斯曲线)
+1. **Growth**: What determines the long-run standard of living? (Solow model)
+2. **Inflation**: Why do prices rise? (quantity theory of money)
+3. **Unemployment**: Why are some people unable to find work? (unemployment decomposition)
+4. **Fluctuations**: Why does the economy have cycles? (AD-AS, Phillips curve)
 
-## 思考题
+## Discussion Questions
 
-- 为什么央行控制货币供给就能控制长期通胀?
-- 短期中降低通胀必然要以高失业为代价吗? (预期的作用)
+- Why can a central bank control long-run inflation simply by controlling the money supply?
+- Must lowering inflation in the short run come at the cost of high unemployment? (the role of expectations)

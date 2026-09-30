@@ -1,14 +1,16 @@
 site_name: Mankiw Economics Lab
-site_description: 曼昆《经济学原理》代码实验手册 —— 从生产可能性边界到菲利普斯曲线，每个模型都能运行、实验、验证。
+site_description: A code-first companion to Mankiw's Principles of Economics — every core micro and macro model implemented as runnable, testable Python.
 site_url: https://mankiwecolab.readthedocs.io/
 repo_url: https://github.com/NoahIsARider/MankiwEcoLab
 repo_name: NoahIsARider/MankiwEcoLab
 edit_uri: edit/master/docs/
 docs_dir: docs
+exclude_docs: |
+  *.zh-CN.md
 
 theme:
   name: material
-  language: zh
+  language: en
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -18,14 +20,14 @@ theme:
       accent: teal
       toggle:
         icon: material/weather-night
-        name: 切换到深色模式
+        name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: teal
       accent: teal
       toggle:
         icon: material/weather-sunny
-        name: 切换到浅色模式
+        name: Switch to light mode
   features:
     - navigation.instant
     - navigation.tracking
@@ -36,23 +38,22 @@ theme:
     - content.code.copy
 
 nav:
-  - 首页: index.md
-  - 使用指南: usage.md
-  - 数学模型: models.md
-  - API 参考: api.md
-  - 教程:
-      - 01 · 供需均衡: tutorials/01-supply-demand.md
-      - 02 · 价格弹性: tutorials/02-elasticity.md
-      - 03 · 市场结构: tutorials/03-market-structure.md
-      - 04 · 外部性与市场失灵: tutorials/04-externality.md
-      - 05 · 宏观经济学导览: tutorials/05-macro-overview.md
-  - 项目结构: structure.md
-  - 验收报告: verification.md
+  - Home: index.md
+  - Usage Guide: usage.md
+  - Mathematical Models: models.md
+  - API Reference: api.md
+  - Tutorials:
+      - 01 · Supply and Demand Equilibrium: tutorials/01-supply-demand.md
+      - 02 · Price Elasticity: tutorials/02-elasticity.md
+      - 03 · Market Structure: tutorials/03-market-structure.md
+      - 04 · Externalities and Market Failure: tutorials/04-externality.md
+      - 05 · Macroeconomics Overview: tutorials/05-macro-overview.md
+  - Project Structure: structure.md
+  - Verification Report: verification.md
 
 plugins:
   - search:
       lang:
-        - zh
         - en
 
 markdown_extensions:

@@ -1,60 +1,60 @@
-# 项目结构
+# Project Structure
 
 ```
 MankiwEcoLab/
 │
-├── README.md                    # 项目概览与徽章
-├── CONTRIBUTING.md              # 贡献指南
-├── requirements.txt             # Python 依赖包列表
-├── pyproject.toml               # 包配置（ruff、pytest、setuptools）
-├── mkdocs.yml                   # 文档站配置（Read the Docs / MkDocs）
-├── LICENSE                      # MIT 许可证
-├── .gitignore                   # Git 忽略文件
-├── config.py                    # 全部可配置参数
-├── main.py                      # CLI 入口（微观/宏观/十大原理）
-├── experiments.py               # 10 个经济学实验
+├── README.md                    # Project overview and badges
+├── CONTRIBUTING.md              # Contribution guidelines
+├── requirements.txt             # Python dependency list
+├── pyproject.toml               # Package configuration (ruff, pytest, setuptools)
+├── mkdocs.yml                   # Docs site config (Read the Docs)
+├── LICENSE                      # MIT License
+├── .gitignore                   # Git ignore rules
+├── config.py                    # All configurable parameters
+├── main.py                      # CLI entry point (micro/macro/ten principles)
+├── experiments.py               # 10 economics experiments
 │
-├── agents/                      # 微观经济主体
+├── agents/                      # Microeconomic agents
 │   ├── __init__.py
-│   ├── consumer.py              # Consumer 类（效用/需求）
-│   └── producer.py              # Producer 类（成本/供给）
+│   ├── consumer.py              # Consumer class (utility/demand)
+│   └── producer.py              # Producer class (cost/supply)
 │
-├── market/                      # 市场机制
+├── market/                      # Market mechanism
 │   ├── __init__.py
-│   ├── market.py                # Market 类（价格发现/出清）
-│   └── equilibrium.py           # 均衡/剩余/弹性/DWL
+│   ├── market.py                # Market class (price discovery/clearing)
+│   └── equilibrium.py           # Equilibrium/surplus/elasticity/DWL
 │
-├── micro/                       # 微观扩展模型
+├── micro/                       # Microeconomic extension models
 │   ├── __init__.py
-│   ├── ppf.py                   # 生产可能性边界
-│   ├── trade.py                 # 比较优势与贸易
-│   ├── externality.py           # 外部性与庇古税
-│   ├── market_structure.py      # 完全竞争/垄断/寡头
-│   ├── consumer_choice.py       # 预算约束/柯布-道格拉斯效用/最优选择
-│   └── game_theory.py           # 纳什均衡/占优策略/混合策略/古诺
+│   ├── ppf.py                   # Production possibilities frontier
+│   ├── trade.py                 # Comparative advantage and trade
+│   ├── externality.py           # Externalities and Pigouvian tax
+│   ├── market_structure.py      # Perfect competition/monopoly/oligopoly
+│   ├── consumer_choice.py       # Budget constraint/Cobb-Douglas/optimal choice
+│   └── game_theory.py           # Nash/dominant/mixed strategy/Cournot
 │
-├── macro/                       # 宏观经济模型
+├── macro/                       # Macroeconomic models
 │   ├── __init__.py
-│   ├── gdp.py                   # GDP 核算与平减指数
-│   ├── inflation.py             # CPI、通胀率、货币数量论
-│   ├── unemployment.py          # 失业率/劳动力参与率
-│   ├── solow.py                 # 索洛增长模型
-│   ├── money.py                 # 货币创造与乘数
-│   ├── ad_as.py                 # AD-AS 模型
-│   ├── phillips.py              # 菲利普斯曲线
-│   ├── loanable_funds.py        # 可贷资金市场与挤出效应
-│   └── islm.py                  # IS-LM 模型
+│   ├── gdp.py                   # GDP accounting and deflator
+│   ├── inflation.py             # CPI, inflation rate, quantity theory of money
+│   ├── unemployment.py          # Unemployment rate/labor force participation rate
+│   ├── solow.py                 # Solow growth model
+│   ├── money.py                 # Money creation and multiplier
+│   ├── ad_as.py                 # AD-AS model
+│   ├── phillips.py              # Phillips curve
+│   ├── loanable_funds.py        # Loanable funds market and crowding out
+│   └── islm.py                  # IS-LM model
 │
-├── utils/                       # 工具模块
+├── utils/                       # Utility modules
 │   ├── __init__.py
-│   ├── economics.py             # 基尼系数/税收均衡/政策模拟
+│   ├── economics.py             # Gini coefficient/tax equilibrium/policy
 │   ├── visualization.py         # EconomicsVisualizer + MacroVisualizer
-│   └── output.py                # 控制台表格/分隔线/格式化
+│   └── output.py                # Console tables/dividers/formatting
 │
-├── notebooks/                   # 交互式 Notebook
-│   └── interactive_lab.ipynb    # 模型工具箱交互演示
+├── notebooks/                   # Interactive Notebooks
+│   └── interactive_lab.ipynb    # Interactive demonstration of the model toolbox
 │
-├── tests/                       # 测试套件（280 个测试）
+├── tests/                       # Test suite (280 tests)
 │   ├── test_consumer.py
 │   ├── test_producer.py
 │   ├── test_market.py
@@ -67,58 +67,58 @@ MankiwEcoLab/
 │   ├── test_loanable_funds.py
 │   └── test_islm.py
 │
-├── docs/                        # 文档（Read the Docs / MkDocs）
-│   ├── index.md                 # 文档索引
-│   ├── usage.md                 # 使用指南
-│   ├── structure.md             # 项目结构（本文档）
-│   ├── verification.md          # 系统验收报告
-│   ├── models.md                # 数学模型与推导
-│   ├── api.md                   # API 参考
-│   └── tutorials/               # 分主题教程（5 篇）
+├── docs/                        # Documentation (Read the Docs / MkDocs)
+│   ├── index.md                 # Documentation index
+│   ├── usage.md                 # Usage guide
+│   ├── structure.md             # Project structure (this document)
+│   ├── verification.md          # System verification report
+│   ├── models.md                # Mathematical models and derivations
+│   ├── api.md                   # API reference
+│   └── tutorials/               # Topic-specific tutorials (5 articles)
 │
-└── output/                      # 运行后自动生成
+└── output/                      # Auto-generated after running
     ├── market_data.csv
     ├── consumer_data.csv
     ├── producer_data.csv
     ├── summary.csv
-    └── *.png                    # 微观与宏观图表
+    └── *.png                    # Micro and macro charts
 ```
 
-## 模块说明
+## Module Description
 
-### agents/ - 经济主体
-- **consumer.py**: 效用函数 `U=α·ln(q+1)-β·q²`，解析求解需求，支付意愿与剩余
-- **producer.py**: 成本函数 `TC=FC+a·q+0.5·b·q²`，`MC=p` 供给，关闭条件
+### agents/ - Economic Agents
+- **consumer.py**: Utility function `U=α·ln(q+1)-β·q²`, analytic demand solution, willingness to pay and surplus
+- **producer.py**: Cost function `TC=FC+a·q+0.5·b·q²`, `MC=p` supply, shutdown condition
 
-### market/ - 市场机制
-- **market.py**: tâtonnement 价格调整、市场出清、均衡检验
-- **equilibrium.py**: `find_equilibrium`、解析剩余、弹性分类、无谓损失、HHI、市场结构判定
+### market/ - Market Mechanism
+- **market.py**: tâtonnement price adjustment, market clearing, equilibrium check
+- **equilibrium.py**: `find_equilibrium`, analytic surplus, elasticity classification, deadweight loss, HHI, market structure determination
 
-### micro/ - 微观扩展
-- **ppf.py**: 资源约束下生产边界、机会成本、MRT
-- **trade.py**: 绝对/比较优势、专业化方案、贸易收益
-- **externality.py**: 私人均衡 vs 社会最优、庇古税、DWL
-- **market_structure.py**: 三种市场结构均衡对比
-- **consumer_choice.py**: 预算约束、柯布-道格拉斯效用、最优组合 `x*=αI/Px`、需求/恩格尔曲线
-- **game_theory.py**: 纯/混合策略纳什均衡、占优策略、帕累托最优、古诺竞争
+### micro/ - Microeconomic Extensions
+- **ppf.py**: Production frontier under resource constraints, opportunity cost, MRT
+- **trade.py**: Absolute/comparative advantage, specialization plan, gains from trade
+- **externality.py**: Private equilibrium vs. social optimum, Pigouvian tax, DWL
+- **market_structure.py**: Equilibrium comparison across three market structures
+- **consumer_choice.py**: Budget constraint, Cobb-Douglas utility, optimal bundle `x*=αI/Px`, demand/Engel curves
+- **game_theory.py**: Pure/mixed-strategy Nash equilibrium, dominant strategy, Pareto optimality, Cournot competition
 
-### macro/ - 宏观经济
-- **gdp.py**: 支出法 GDP、平减指数、通胀率
-- **inflation.py**: CPI、货币数量论 (MV=PY)
-- **unemployment.py**: 失业率、参与率、失业分解
-- **solow.py**: 稳态、黄金律、收敛路径
-- **money.py**: 存款/货币乘数、派生存款
-- **ad_as.py**: 短/长期均衡、需求与供给冲击
-- **phillips.py**: 通胀-失业权衡、牺牲率
-- **loanable_funds.py**: 可贷资金市场均衡、财政政策、挤出效应
-- **islm.py**: IS/LM 曲线、均衡、财政与货币政策、支出乘数
+### macro/ - Macroeconomics
+- **gdp.py**: Expenditure-method GDP, deflator, inflation rate
+- **inflation.py**: CPI, quantity theory of money (MV=PY)
+- **unemployment.py**: Unemployment rate, participation rate, unemployment decomposition
+- **solow.py**: Steady state, golden rule, convergence path
+- **money.py**: Deposit/money multiplier, derived deposits
+- **ad_as.py**: Short/long-run equilibrium, demand and supply shocks
+- **phillips.py**: Inflation-unemployment tradeoff, sacrifice ratio
+- **loanable_funds.py**: Loanable funds market equilibrium, fiscal policy, crowding out
+- **islm.py**: IS/LM curves, equilibrium, fiscal and monetary policy, spending multiplier
 
-### utils/ - 工具
-- **economics.py**: 基尼系数、洛伦兹曲线、泰尔指数、税收/补贴均衡、政策干预
-- **visualization.py**: 微观 6 图 + 宏观 6 图 + 消费者选择图（英文标注）
-- **output.py**: 对齐表格、分隔标题、百分比格式化
+### utils/ - Utilities
+- **economics.py**: Gini coefficient, Lorenz curve, Theil index, tax/subsidy equilibrium, policy intervention
+- **visualization.py**: 6 micro charts + 6 macro charts + consumer choice chart (English labels)
+- **output.py**: Aligned tables, section dividers, percentage formatting
 
-## 数据流
+## Data Flow
 
 ```
 config.py → main.py / experiments.py
@@ -126,61 +126,61 @@ config.py → main.py / experiments.py
       create_agents (utils/economics.py)
                 ↓
         Market (market/market.py)
-                ├─ 计算供需 (agents/)
-                ├─ 更新价格 (tâtonnement)
-                ├─ 市场出清
-                └─ 均衡检验 (market/equilibrium.py)
+                ├─ Compute supply and demand (agents/)
+                ├─ Update prices (tâtonnement)
+                ├─ Market clearing
+                └─ Equilibrium check (market/equilibrium.py)
                 ↓
-     分析 (utils/economics.py, micro/, macro/)
+     Analysis (utils/economics.py, micro/, macro/)
                 ↓
-     可视化 (utils/visualization.py)
+     Visualization (utils/visualization.py)
                 ↓
-     输出 (output/)
+     Output (output/)
 ```
 
-## 关键算法
+## Key Algorithms
 
-### 需求解析求解（consumer.py）
+### Analytic Demand Solution (consumer.py)
 ```
 MU(q) = p ⇒ 2βq² + (p+2β)q + (p-α) = 0
 ```
-一元二次方程根，与预算约束 `income/p` 取较小值。
+Root of a quadratic equation, take the smaller value against the budget constraint `income/p`.
 
-### 价格调整（market.py）
+### Price Adjustment (market.py)
 ```
 ED = D(p) - S(p)
 p_new = p + α·[ED/(D+S)]·p
 ```
 
-### 均衡检验（market.py）
+### Equilibrium Check (market.py)
 ```
-std(P_recent)/mean < threshold  且  |D-S|/(D+S) < threshold
+std(P_recent)/mean < threshold  and  |D-S|/(D+S) < threshold
 ```
 
-### 索洛稳态（solow.py）
+### Solow Steady State (solow.py)
 ```
 k* = (s·A/(δ+n))^(1/(1-α))
-λ = (1-α)(δ+n)   # 收敛速度
+λ = (1-α)(δ+n)   # convergence speed
 ```
 
-## 扩展点
+## Extension Points
 
-1. **新增经济主体**: 在 `agents/` 添加类，实现相同接口
-2. **新市场机制**: 继承 `Market` 重写 `update_price()`
-3. **政策模拟**: 在 `utils/economics.py` 添加函数
-4. **新宏观模型**: 在 `macro/` 添加模块，遵循现有 docstring 与 `analyze()` 模式
-5. **交互式界面**: Streamlit / Dash 封装 `main.py` 流程
+1. **Add an economic agent**: Add a class in `agents/` implementing the same interface
+2. **New market mechanism**: Subclass `Market` and override `update_price()`
+3. **Policy simulation**: Add functions in `utils/economics.py`
+4. **New macroeconomic model**: Add a module in `macro/`, following the existing docstring and `analyze()` pattern
+5. **Interactive interface**: Wrap the `main.py` flow with Streamlit / Dash
 
-## 性能优化建议
+## Performance Optimization Suggestions
 
-- 大规模模拟用 NumPy 向量化供需计算
-- 用 `multiprocessing` 并行多个场景
-- 缓存重复计算的需求/供给曲线
-- 可视化时采样部分主体
+- Use NumPy-vectorized supply/demand computation for large-scale simulations
+- Use `multiprocessing` to parallelize multiple scenarios
+- Cache repeated demand/supply curve computations
+- Sample a subset of agents when visualizing
 
-## 测试策略
+## Testing Strategy
 
-- 单元测试: 每个类的独立方法（tests/test_consumer.py 等）
-- 集成测试: 完整模拟流程（tests/test_integration.py）
-- 回归测试: 固定随机种子保证可重现
-- 运行: `python -m pytest tests/ -q`（280 个测试）
+- Unit tests: independent methods of each class (tests/test_consumer.py, etc.)
+- Integration tests: full simulation flow (tests/test_integration.py)
+- Regression tests: fixed random seeds to guarantee reproducibility
+- Run: `python -m pytest tests/ -q` (280 tests)

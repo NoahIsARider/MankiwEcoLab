@@ -1,126 +1,126 @@
-# 使用指南
+# Usage Guide
 
-> 本文档涵盖：CLI 命令、配置参数、自定义实验、宏微观模型调用、输出文件与常见问题。
+> This document covers: CLI commands, configuration parameters, custom experiments, macro and micro model invocation, output files, and FAQ.
 
-## 快速开始
+## Getting Started
 
-### 1. 安装依赖
+### 1. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Python 3.9+ 推荐。开发测试环境为 Python 3.11。
+Python 3.9+ is recommended. The development and test environment uses Python 3.11.
 
-### 2. 运行完整微观市场模拟
+### 2. Run the Full Microeconomic Market Simulation
 
 ```bash
 python main.py
 ```
 
-创建 1000 个消费者、200 个生产者，模拟市场通过 35 轮交易收敛到均衡，输出数据与图表到 `output/`。
+Creates 1000 consumers and 200 producers; the simulated market converges to equilibrium through 35 rounds of trading, writing data and charts to `output/`.
 
-### 3. 运行宏观演示
+### 3. Run the Macro Demo
 
 ```bash
 python main.py --macro
 ```
 
-展示索洛增长、AD-AS、菲利普斯曲线、货币创造四大宏观模型。
+Demonstrates four major macro models: Solow growth, AD-AS, the Phillips curve, and money creation.
 
-### 4. 运行十大原理演示
+### 4. Run the Ten Principles Demo
 
 ```bash
 python main.py --demo
 ```
 
-以十个独立条目回顾曼昆《经济学原理》的十大原理。
+Reviews the ten principles from Mankiw's *Principles of Economics* as ten standalone items.
 
-### 5. 运行全部实验
+### 5. Run All Experiments
 
 ```bash
 python experiments.py
 ```
 
-运行 10 个经济学实验（供需均衡、需求/供给移动、弹性、价格管制、外部性、市场结构、宏观模型、消费者选择、博弈论与寡头）。
+Runs 10 economics experiments (supply-demand equilibrium, demand/supply shifts, elasticity, price controls, externalities, market structure, macro models, consumer choice, game theory, and oligopoly).
 
-### 6. 交互式 Notebook
+### 6. Interactive Notebook
 
 ```bash
 jupyter notebook notebooks/interactive_lab.ipynb
 ```
 
-交互式演示消费者选择、博弈论、可贷资金市场与 IS-LM 模型。
+Interactive demos of consumer choice, game theory, the loanable funds market, and the IS-LM model.
 
-### 7. 运行测试
+### 7. Run the Tests
 
 ```bash
 python -m pytest tests/ -q
 ```
 
-280 个单元与集成测试，覆盖全部模型。
+280 unit and integration tests covering all models.
 
-## 命令行接口
+## Command-Line Interface
 
 ```
 usage: main.py [-h] [--rounds ROUNDS] [--consumers CONSUMERS]
                [--producers PRODUCERS] [--seed SEED] [--macro]
                [--demo] [--experiments] [--version]
 
-可选参数:
-  --rounds N        市场交易轮次 (默认 100)
-  --consumers N     消费者数量 (默认 1000)
-  --producers N     生产者数量 (默认 1000)
-  --seed S          随机种子 (默认 42)
-  --macro           运行宏观经济学演示
-  --demo            运行十大原理演示
-  --experiments     运行全部经济学实验
-  --version         显示版本号
+optional arguments:
+  --rounds N        market trading rounds (default 100)
+  --consumers N     number of consumers (default 1000)
+  --producers N     number of producers (default 1000)
+  --seed S          random seed (default 42)
+  --macro           run the macroeconomics demo
+  --demo            run the ten principles demo
+  --experiments     run all economics experiments
+  --version         show version number
 ```
 
-## 配置参数
+## Configuration Parameters
 
-所有参数在 `config.py` 中，按模块分组：
+All parameters live in `config.py`, grouped by module:
 
-### 经济主体数量
+### Number of Economic Agents
 ```python
 NUM_CONSUMERS = 1000
 NUM_PRODUCERS = 1000
 ```
 
-### 模拟参数
+### Simulation Parameters
 ```python
-NUM_ROUNDS = 100                 # 市场交易轮次
-CONVERGENCE_THRESHOLD = 0.01     # 价格收敛阈值
-PRICE_ADJUSTMENT_SPEED = 0.1     # 价格调整速度
+NUM_ROUNDS = 100                 # market trading rounds
+CONVERGENCE_THRESHOLD = 0.01     # price convergence threshold
+PRICE_ADJUSTMENT_SPEED = 0.1     # price adjustment speed
 ```
 
-### 消费者参数
+### Consumer Parameters
 ```python
-CONSUMER_INCOME_MEAN = 1000.0    # 平均收入
-CONSUMER_ALPHA_MEAN = 100.0      # 效用函数 α (基本效用)
-CONSUMER_BETA_MEAN = 0.5         # 效用函数 β (递减速度)
+CONSUMER_INCOME_MEAN = 1000.0    # mean income
+CONSUMER_ALPHA_MEAN = 100.0      # utility function α (base utility)
+CONSUMER_BETA_MEAN = 0.5         # utility function β (decay speed)
 ```
 
-### 生产者参数
+### Producer Parameters
 ```python
-PRODUCER_FIXED_COST_MEAN = 500.0 # 平均固定成本
-PRODUCER_MC_A_MEAN = 10.0        # 边际成本常数项
-PRODUCER_MC_B_MEAN = 0.5         # 边际成本斜率
+PRODUCER_FIXED_COST_MEAN = 500.0 # average fixed cost
+PRODUCER_MC_A_MEAN = 10.0        # marginal cost constant term
+PRODUCER_MC_B_MEAN = 0.5         # marginal cost slope
 ```
 
-### 宏观模型参数
+### Macro Model Parameters
 ```python
-SOLOW_ALPHA = 0.3                # 资本产出弹性
-SOLOW_SAVINGS_RATE = 0.2         # 储蓄率
-SOLOW_DEPRECIATION = 0.05        # 折旧率
-RESERVE_RATIO = 0.10             # 准备金率
-PHILLIPS_BETA = 0.5              # 通胀-失业权衡系数
+SOLOW_ALPHA = 0.3                # capital output elasticity
+SOLOW_SAVINGS_RATE = 0.2         # savings rate
+SOLOW_DEPRECIATION = 0.05        # depreciation rate
+RESERVE_RATIO = 0.10             # reserve ratio
+PHILLIPS_BETA = 0.5              # inflation-unemployment trade-off coefficient
 ```
 
-## 自定义实验
+## Custom Experiments
 
-### 示例1: 模拟经济冲击
+### Example 1: Simulating an Economic Shock
 
 ```python
 from utils.economics import create_agents
@@ -137,17 +137,17 @@ market = Market(consumers, producers, initial_price=50)
 
 for _ in range(50):
     market.run_round()
-print(f"初始价格: {market.current_price:.2f}")
+print(f"Initial price: {market.current_price:.2f}")
 
-for producer in producers:           # 成本上升冲击
+for producer in producers:           # cost increase shock
     producer.mc_a *= 1.3
 
 for _ in range(50):
     market.run_round()
-print(f"冲击后价格: {market.current_price:.2f}")
+print(f"Post-shock price: {market.current_price:.2f}")
 ```
 
-### 示例2: 外部性分析
+### Example 2: Externality Analysis
 
 ```python
 from micro import ExternalityModel
@@ -155,12 +155,12 @@ from micro import ExternalityModel
 model = ExternalityModel(demand_intercept=100, demand_slope=2,
                          supply_intercept=10, supply_slope=1, externality_value=10)
 result = model.analyze()
-print(f"私人产量 {result['private_quantity']:.2f}, "
-      f"社会最优 {result['social_quantity']:.2f}, "
-      f"无谓损失 {result['deadweight_loss']:.2f}")
+print(f"Private quantity {result['private_quantity']:.2f}, "
+      f"social optimum {result['social_quantity']:.2f}, "
+      f"deadweight loss {result['deadweight_loss']:.2f}")
 ```
 
-### 示例3: 索洛增长模型
+### Example 3: Solow Growth Model
 
 ```python
 from macro import SolowGrowthModel
@@ -168,21 +168,21 @@ from macro import SolowGrowthModel
 solow = SolowGrowthModel(alpha=0.3, savings_rate=0.2,
                          depreciation_rate=0.05, population_growth_rate=0.01)
 analysis = solow.analyze()
-print(f"稳态人均资本: {analysis['steady_state']['k']:.2f}")
-print(f"黄金律资本: {analysis['golden_rule']['k_gold']:.2f}")
+print(f"Steady-state capital per capita: {analysis['steady_state']['k']:.2f}")
+print(f"Golden-rule capital: {analysis['golden_rule']['k_gold']:.2f}")
 ```
 
-### 示例4: 收入不平等分析
+### Example 4: Income Inequality Analysis
 
 ```python
 from utils.economics import calculate_gini_coefficient, calculate_lorenz_curve
 
 surpluses = [c.consumer_surplus for c in consumers]
-print(f"消费者剩余基尼系数: {calculate_gini_coefficient(surpluses):.4f}")
-population, cumulative = calculate_lorenz_curve(surpluses)  # 洛伦兹曲线
+print(f"Gini coefficient of consumer surplus: {calculate_gini_coefficient(surpluses):.4f}")
+population, cumulative = calculate_lorenz_curve(surpluses)  # Lorenz curve
 ```
 
-### 示例5: 消费者选择理论
+### Example 5: Consumer Choice Theory
 
 ```python
 from micro import BudgetConstraint, CobbDouglasUtility, ConsumerChoice
@@ -192,34 +192,34 @@ utility = CobbDouglasUtility(alpha=0.5)
 choice = ConsumerChoice(budget, utility)
 
 bundle = choice.optimal_bundle()
-print(f"最优组合: x*={bundle['x']:.2f}, y*={bundle['y']:.2f}")
-print(f"相切条件满足: {choice.verify_tangency()}")
+print(f"Optimal bundle: x*={bundle['x']:.2f}, y*={bundle['y']:.2f}")
+print(f"Tangency condition satisfied: {choice.verify_tangency()}")
 
-# 需求曲线与恩格尔曲线
+# Demand curve and Engel curve
 prices, quantities = choice.demand_curve('x', price_range=(5, 20))
 incomes, engel_q = choice.engel_curve('x', income_range=(500, 2000))
 ```
 
-### 示例6: 博弈论与古诺竞争
+### Example 6: Game Theory and Cournot Competition
 
 ```python
 from micro import prisoners_dilemma, CournotGame
 
 pd = prisoners_dilemma()
 nash = pd.pure_nash_equilibria()
-print(f"囚徒困境纳什均衡: {nash[0]['A_strategy']}/{nash[0]['B_strategy']}")
+print(f"Prisoner's dilemma Nash equilibrium: {nash[0]['A_strategy']}/{nash[0]['B_strategy']}")
 
 cg = CournotGame(num_firms=2, demand_intercept=100, demand_slope=1, marginal_cost=20)
 eq = cg.nash_equilibrium()
-print(f"古诺均衡: 每企业产量 {eq['per_firm_output']:.2f}, 价格 {eq['price']:.2f}")
+print(f"Cournot equilibrium: per-firm output {eq['per_firm_output']:.2f}, price {eq['price']:.2f}")
 
-# 混合策略均衡
+# Mixed-strategy equilibrium
 from micro import matching_pennies
 mp = matching_pennies()
-print(f"猜硬币混合均衡: p={mp.mixed_strategy_equilibrium()['p']:.2f}")
+print(f"Matching pennies mixed equilibrium: p={mp.mixed_strategy_equilibrium()['p']:.2f}")
 ```
 
-### 示例7: 可贷资金市场
+### Example 7: Loanable Funds Market
 
 ```python
 from macro import LoanableFundsModel
@@ -229,139 +229,139 @@ lf = LoanableFundsModel(
     investment_autonomous=1200, investment_sensitivity=400,
     government_borrowing=0,
 )
-print(f"均衡利率: {lf.equilibrium_rate():.2%}")
+print(f"Equilibrium interest rate: {lf.equilibrium_rate():.2%}")
 
 fiscal = lf.with_fiscal_policy(additional_borrowing=200)
-print(f"财政扩张后挤出效应: {fiscal['crowding_out']:.2f}")
+print(f"Crowding-out effect after fiscal expansion: {fiscal['crowding_out']:.2f}")
 ```
 
-### 示例8: IS-LM 模型
+### Example 8: IS-LM Model
 
 ```python
 from macro import ISLMModel
 
 islm = ISLMModel()
 eq = islm.equilibrium()
-print(f"IS-LM 均衡: Y={eq['output']:.2f}, r={eq['interest_rate']:.2%}")
+print(f"IS-LM equilibrium: Y={eq['output']:.2f}, r={eq['interest_rate']:.2%}")
 
 fp = islm.fiscal_policy(spending_change=50)
 mp = islm.monetary_policy(money_supply_change=100)
-print(f"财政扩张 ΔY={fp['output_change']:.2f}, 货币扩张 ΔY={mp['output_change']:.2f}")
+print(f"Fiscal expansion ΔY={fp['output_change']:.2f}, monetary expansion ΔY={mp['output_change']:.2f}")
 ```
 
-## 核心概念解释
+## Core Concepts
 
-### 1. 效用函数
+### 1. Utility Function
 ```
 U(q) = α·ln(q+1) - β·q²
 MU(q) = α/(q+1) - 2β·q
 ```
-消费者预算约束下效用最大化，最优条件 `MU(q) = p`，解析求解一元二次方程得到需求量。
+The consumer maximizes utility subject to the budget constraint; the optimality condition is `MU(q) = p`, and the quantity demanded is found analytically by solving a quadratic equation.
 
-### 2. 生产成本
+### 2. Production Cost
 ```
 TC(q) = FC + a·q + 0.5·b·q²
 MC(q) = a + b·q
 ```
-完全竞争下供给条件 `P = MC`，受产能与关闭条件约束。
+Under perfect competition the supply condition is `P = MC`, subject to capacity and shutdown conditions.
 
-### 3. 市场均衡与调整
+### 3. Market Equilibrium and Adjustment
 ```
-超额需求 ED = D(p) - S(p)
+Excess demand ED = D(p) - S(p)
 Δp = α·[ED/(D+S)]·p
 ```
-需求 > 供给 → 价格上升；供给 > 需求 → 价格下降，直至收敛。
+Demand > supply → price rises; supply > demand → price falls, until convergence.
 
-### 4. 剩余与效率
-- 消费者剩余 CS = WTP 曲线下方 - 支出
-- 生产者剩余 PS = 收入 - MC 曲线下方
-- 总剩余 = CS + PS，完全竞争均衡下最大化（帕累托最优）
+### 4. Surplus and Efficiency
+- Consumer surplus CS = area below the WTP curve - expenditure
+- Producer surplus PS = revenue - area below the MC curve
+- Total surplus = CS + PS, maximized at the perfectly competitive equilibrium (Pareto optimal)
 
-### 5. 宏观核心模型
-- 货币数量论: `M·V = P·Y`
-- 索洛稳态: `k* = [s·A/(δ+n)]^(1/(1-α))`
-- 货币乘数: `m = 1/(r+c)`
-- 菲利普斯曲线: `π = πᵉ - β·(u-u_n)`
-- 可贷资金均衡: `S0 + S1·r = I0 - I1·r + G`
-- IS-LM 均衡: 商品市场 `Y = C+I+G` 与货币市场 `M/P = L(Y,r)` 联立
+### 5. Core Macroeconomic Models
+- Quantity theory of money: `M·V = P·Y`
+- Solow steady state: `k* = [s·A/(δ+n)]^(1/(1-α))`
+- Money multiplier: `m = 1/(r+c)`
+- Phillips curve: `π = πᵉ - β·(u-u_n)`
+- Loanable funds equilibrium: `S0 + S1·r = I0 - I1·r + G`
+- IS-LM equilibrium: the goods market `Y = C+I+G` combined with the money market `M/P = L(Y,r)`
 
-详细推导见 `docs/models.md`。
+Detailed derivations are in `docs/models.md`.
 
-## 输出文件说明
+## Output Files
 
-`output/` 目录（微观模拟）：
+The `output/` directory (microeconomic simulation):
 
-### 数据文件
-- `market_data.csv`: 每轮价格、供需、交易量、剩余
-- `consumer_data.csv`: 每个消费者的收入、效用、需求量、剩余
-- `producer_data.csv`: 每个生产者的成本、产量、利润、剩余
-- `summary.csv`: 统计摘要（弹性、基尼系数、效率指标）
+### Data Files
+- `market_data.csv`: price, supply and demand, transaction volume, and surplus for each round
+- `consumer_data.csv`: income, utility, quantity demanded, and surplus of each consumer
+- `producer_data.csv`: cost, output, profit, and surplus of each producer
+- `summary.csv`: statistical summary (elasticity, Gini coefficient, efficiency metrics)
 
-### 图表文件
-- `supply_demand_curves.png`: 供需曲线与均衡点
-- `price_convergence.png`: 价格收敛过程
-- `surplus_analysis.png`: 消费者/生产者剩余
-- `transaction_volume.png`: 交易量变化
-- `agent_distributions.png`: 经济主体参数分布
-- `welfare_analysis.png`: 福利分析
+### Chart Files
+- `supply_demand_curves.png`: supply and demand curves and the equilibrium point
+- `price_convergence.png`: price convergence process
+- `surplus_analysis.png`: consumer/producer surplus
+- `transaction_volume.png`: changes in transaction volume
+- `agent_distributions.png`: parameter distributions of economic agents
+- `welfare_analysis.png`: welfare analysis
 
-宏观演示 (`--macro`) 额外生成:
-- `solow_growth.png`: 索洛收敛路径与黄金律
-- `ad_as_model.png`: AD-AS 模型
-- `phillips_curve.png`: 菲利普斯曲线
-- `money_creation.png`: 货币创造过程
-- `loanable_funds.png`: 可贷资金市场与挤出效应
-- `islm_model.png`: IS-LM 均衡
+The macro demo (`--macro`) additionally generates:
+- `solow_growth.png`: Solow convergence path and golden rule
+- `ad_as_model.png`: AD-AS model
+- `phillips_curve.png`: Phillips curve
+- `money_creation.png`: money creation process
+- `loanable_funds.png`: loanable funds market and crowding-out effect
+- `islm_model.png`: IS-LM equilibrium
 
-微观模型也可单独生成:
-- `consumer_choice.png`: 消费者选择与最优组合
+Micro models can also be generated separately:
+- `consumer_choice.png`: consumer choice and optimal bundle
 
-## 常见问题
+## FAQ
 
-### Q1: 为什么市场不收敛到均衡？
+### Q1: Why doesn't the market converge to equilibrium?
 
-1. `PRICE_ADJUSTMENT_SPEED` 过大导致震荡 → 调低
-2. 参数不合理 → 检查消费者/生产者参数
-3. 轮次不足 → 增加 `--rounds`
+1. `PRICE_ADJUSTMENT_SPEED` is too large and causes oscillation → lower it
+2. Unreasonable parameters → check the consumer/producer parameters
+3. Insufficient rounds → increase `--rounds`
 
-### Q2: 如何模拟不同商品类型？
+### Q2: How do I simulate different types of goods?
 
-| 类型 | α | β |
+| Type | α | β |
 |------|-----|-----|
-| 必需品 | 100-200 | 0.1-0.3 |
-| 正常商品 | 80-120 | 0.4-0.6 |
-| 奢侈品 | 40-80 | 0.8-1.5 |
+| Necessity | 100-200 | 0.1-0.3 |
+| Normal good | 80-120 | 0.4-0.6 |
+| Luxury good | 40-80 | 0.8-1.5 |
 
-### Q3: 如何加快运行速度？
+### Q3: How can I make it run faster?
 
-- 减少主体数量: `--consumers 1000 --producers 200`
-- 关闭可视化/保存: 见 `config.py` 中 `SAVE_PLOTS`、`SAVE_RESULTS`
+- Reduce the number of agents: `--consumers 1000 --producers 200`
+- Disable visualization/saving: see `SAVE_PLOTS` and `SAVE_RESULTS` in `config.py`
 
-### Q4: 如何分析输出数据？
+### Q4: How do I analyze the output data?
 
 ```python
 import pandas as pd
 market_data = pd.read_csv('output/market_data.csv')
-print(market_data['价格'].describe())
-market_data.plot(x='轮次', y=['价格', '交易量'])
+print(market_data['Price'].describe())
+market_data.plot(x='Round', y=['Price', 'Volume'])
 ```
 
-### Q5: 图表中文显示为方块？
+### Q5: Chinese characters render as boxes in charts?
 
-需安装中文字体: `apt-get install fonts-noto-cjk`，然后删除 matplotlib 缓存
-`rm -rf ~/.cache/matplotlib` 后重新运行。
+Install a Chinese font: `apt-get install fonts-noto-cjk`, then delete the matplotlib cache with
+`rm -rf ~/.cache/matplotlib` and rerun.
 
-## 参考资料
+## References
 
-- 曼昆《经济学原理》微观经济学分册 / 宏观经济学分册
-- 范里安《微观经济学：现代观点》
-- 布兰查德《宏观经济学》
+- Mankiw, *Principles of Economics*, microeconomics volume / macroeconomics volume
+- Varian, *Microeconomics: A Modern Approach*
+- Blanchard, *Macroeconomics*
 
-## 文档导航
+## Documentation Map
 
-- [index.md](index.md) - 文档索引
-- [models.md](models.md) - 数学模型与推导
-- [api.md](api.md) - API 参考
-- [structure.md](structure.md) - 项目结构与数据流
-- [verification.md](verification.md) - 系统验收报告
-- [tutorials/01-supply-demand.md](tutorials/01-supply-demand.md) - 分主题教程（共 5 篇）
+- [index.md](index.md) - Documentation
+- [models.md](models.md) - Mathematical models and derivations
+- [api.md](api.md) - API reference
+- [structure.md](structure.md) - Project structure and data flow
+- [verification.md](verification.md) - System acceptance report
+- [tutorials/01-supply-demand.md](tutorials/01-supply-demand.md) - Topic-based tutorials (5 in total)

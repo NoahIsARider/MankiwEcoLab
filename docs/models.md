@@ -1,376 +1,376 @@
-# 数学模型与公式推导
+# Mathematical Models and Derivations
 
-本文档汇总项目中实现的全部经济学模型及其数学公式。
+This document summarizes all economic models implemented in the project along with their mathematical formulas.
 
 ---
 
-## 微观经济学
+## Microeconomics
 
-### 1. 效用函数 (Consumer Utility)
+### 1. Consumer Utility
 
-消费者效用函数:
+Consumer utility function:
 
 ```
 U(q) = α · ln(q + 1) - β · q²
 ```
 
-- `α` (alpha): 商品的基本效用价值
-- `β` (beta): 边际效用递减速度
+- `α` (alpha): the good's base utility value
+- `β` (beta): rate of diminishing marginal utility
 
-边际效用 (对 q 求导):
+Marginal utility (derivative with respect to q):
 
 ```
 MU(q) = dU/dq = α / (q + 1) - 2β · q
 ```
 
-**需求求解**: 消费者在预算约束下最大化效用，最优条件为 `MU(q) = p`，即:
+**Demand solving**: The consumer maximizes utility subject to the budget constraint; the optimality condition is `MU(q) = p`, i.e.:
 
 ```
 2β · q² + (p + 2β) · q + (p - α) = 0
 ```
 
-一元二次方程解析求解后，与预算约束 `q ≤ income / p` 取较小值。
+After solving the quadratic equation analytically, take the smaller of the result and the budget constraint `q ≤ income / p`.
 
-### 2. 生产者成本函数 (Producer Cost)
+### 2. Producer Cost
 
-总成本函数:
+Total cost function:
 
 ```
 TC(q) = FC + a · q + 0.5 · b · q²
 ```
 
-- `FC`: 固定成本
-- `a`: 边际成本常数项
-- `b`: 边际成本斜率 (规模报酬递减)
+- `FC`: fixed cost
+- `a`: constant term of marginal cost
+- `b`: slope of marginal cost (diminishing returns to scale)
 
-边际成本:
+Marginal cost:
 
 ```
 MC(q) = dTC/dq = a + b · q
 ```
 
-**供给求解**: 完全竞争下 `P = MC`，即 `q = (P - a) / b`，再受产能约束与关闭条件 (`P ≥ AVC`) 限制。
+**Supply solving**: Under perfect competition `P = MC`, i.e. `q = (P - a) / b`, further constrained by capacity and the shutdown condition (`P ≥ AVC`).
 
-### 3. 市场均衡 (Market Equilibrium)
+### 3. Market Equilibrium
 
-- 总需求: `D(p) = Σ D_i(p)`
-- 总供给: `S(p) = Σ S_j(p)`
-- 均衡条件: `D(p*) = S(p*)`
+- Aggregate demand: `D(p) = Σ D_i(p)`
+- Aggregate supply: `S(p) = Σ S_j(p)`
+- Equilibrium condition: `D(p*) = S(p*)`
 
-**价格调整 (tâtonnement)**: 超额需求 `ED = D - S`
+**Price adjustment (tâtonnement)**: excess demand `ED = D - S`
 
 ```
 Δp = α · [ED / (D + S)] · p
 ```
 
-**均衡检验**:
-- 价格稳定: `std(P_recent) / mean(P_recent) < threshold`
-- 供需平衡: `|S - D| / (S + D) < threshold`
+**Equilibrium checks**:
+- Price stability: `std(P_recent) / mean(P_recent) < threshold`
+- Balance of supply and demand: `|S - D| / (S + D) < threshold`
 
-### 4. 消费者剩余与生产者剩余
+### 4. Consumer Surplus and Producer Surplus
 
-消费者剩余 (WTP 曲线下方面积减去支出):
+Consumer surplus (area under the WTP curve minus expenditure):
 
 ```
 CS = ∫₀^Q WTP(q) dq - P·Q
 ```
 
-生产者剩余 (收入减去 MC 曲线下方面积):
+Producer surplus (revenue minus area under the MC curve):
 
 ```
 PS = P·Q - ∫₀^Q MC(q) dq
 ```
 
-总剩余 = CS + PS。
+Total surplus = CS + PS.
 
-### 5. 生产可能性边界 (PPF)
+### 5. Production Possibility Frontier (PPF)
 
-固定资源 `R`，生产 X 需 `a` 资源/单位，生产 Y 需 `b` 资源/单位:
+Fixed resource `R`, producing X requires `a` resources/unit, producing Y requires `b` resources/unit:
 
 ```
 a·X + b·Y = R
 ```
 
-机会成本:
+Opportunity cost:
 
 ```
-OC_x = a / b    (多生产 1 单位 X 放弃的 Y)
-OC_y = b / a    (多生产 1 单位 Y 放弃的 X)
+OC_x = a / b    (Y given up to produce 1 more unit of X)
+OC_y = b / a    (X given up to produce 1 more unit of Y)
 ```
 
-边际转换率 MRT = a / b。
+Marginal rate of transformation MRT = a / b.
 
-### 6. 比较优势与贸易
+### 6. Comparative Advantage and Trade
 
-生产者每小时产出 `ox` 单位 X 或 `oy` 单位 Y:
+A producer's hourly output is `ox` units of X or `oy` units of Y:
 
 ```
 OC_x = oy / ox
 OC_y = ox / oy
 ```
 
-比较优势 = 更低机会成本的生产者。贸易收益 = 专业化总产量 - 自给自足总产量。
+Comparative advantage = the producer with the lower opportunity cost. Gains from trade = total output under specialization - total output under autarky.
 
-### 7. 外部性 (Externalities)
+### 7. Externalities
 
-线性供需: `P_d = a_d - b_d·Q`, `P_s = a_s + b_s·Q`
+Linear supply and demand: `P_d = a_d - b_d·Q`, `P_s = a_s + b_s·Q`
 
-- 负外部性: 社会供给曲线 = 私人供给 + 外部成本 `e`
-- 社会最优: `Q_social = (a_d - a_s - e) / (b_d + b_s)`
-- 无谓损失: `DWL = 0.5 · |Q_private - Q_social| · |e|`
-- 最优庇古税 = `e`
+- Negative externality: social supply curve = private supply + external cost `e`
+- Social optimum: `Q_social = (a_d - a_s - e) / (b_d + b_s)`
+- Deadweight loss: `DWL = 0.5 · |Q_private - Q_social| · |e|`
+- Optimal Pigouvian tax = `e`
 
-### 8. 市场结构 (Market Structure)
+### 8. Market Structure
 
-市场需求 `P = a - b·Q`，企业边际成本 `MC`:
+Market demand `P = a - b·Q`, firm marginal cost `MC`:
 
-| 结构 | 均衡条件 | 数量 Q | 价格 P |
+| Structure | Equilibrium condition | Quantity Q | Price P |
 |------|---------|--------|--------|
-| 完全竞争 | P = MC | `(a - MC) / b` | MC |
-| 垄断 | MR = MC | `(a - MC) / (2b)` | `a - b·Q` |
-| 古诺寡头 (n家) | 反应函数 | `n(a-MC)/(b(n+1))` | `a - b·Q` |
+| Perfect competition | P = MC | `(a - MC) / b` | MC |
+| Monopoly | MR = MC | `(a - MC) / (2b)` | `a - b·Q` |
+| Cournot oligopoly (n firms) | Reaction function | `n(a-MC)/(b(n+1))` | `a - b·Q` |
 
-赫芬达尔指数: `HHI = Σ s_i² × 10000`
+Herfindahl index: `HHI = Σ s_i² × 10000`
 
 ---
 
-## 宏观经济学
+## Macroeconomics
 
-### 9. GDP 核算
+### 9. GDP Accounting
 
-支出法:
+Expenditure approach:
 
 ```
 GDP = C + I + G + NX
 ```
 
-- `C`: 消费
-- `I`: 投资
-- `G`: 政府购买
-- `NX`: 净出口
+- `C`: consumption
+- `I`: investment
+- `G`: government purchases
+- `NX`: net exports
 
-实际 GDP 与平减指数:
-
-```
-实际GDP_t = 名义GDP_t / P_t × P_base
-GDP平减指数_t = 名义GDP_t / 实际GDP_t × 100
-```
-
-### 10. CPI 与通货膨胀
+Real GDP and the deflator:
 
 ```
-CPI_t = (篮子成本_t / 篮子成本_基期) × 100
+real_GDP_t = nominal_GDP_t / P_t × P_base
+GDP_deflator_t = nominal_GDP_t / real_GDP_t × 100
+```
+
+### 10. CPI and Inflation
+
+```
+CPI_t = (basket_cost_t / basket_cost_base) × 100
 π = (CPI_t - CPI_{t-1}) / CPI_{t-1} × 100
 ```
 
-### 11. 货币数量论 (Quantity Theory)
+### 11. Quantity Theory
 
 ```
 M · V = P · Y
 ```
 
-- `M`: 货币供给
-- `V`: 货币流通速度
-- `P`: 物价水平
-- `Y`: 实际产出
+- `M`: money supply
+- `V`: velocity of money
+- `P`: price level
+- `Y`: real output
 
-货币中性: V, Y 恒定时，`π = ΔM/M`。
+Money neutrality: with V and Y held constant, `π = ΔM/M`.
 
-### 12. 失业统计
+### 12. Unemployment Statistics
 
 ```
-失业率 = 失业 / 劳动力 × 100
-劳动力参与率 = 劳动力 / 成年人口 × 100
-自然失业率 = 摩擦性 + 结构性
-周期性失业 = 实际失业率 - 自然失业率
+unemployment_rate = unemployed / labor_force × 100
+labor_force_participation_rate = labor_force / adult_population × 100
+natural_unemployment_rate = frictional + structural
+cyclical_unemployment = actual_unemployment_rate - natural_unemployment_rate
 ```
 
-### 13. 索洛增长模型 (Solow)
+### 13. Solow Growth Model
 
-柯布-道格拉斯生产函数:
+Cobb-Douglas production function:
 
 ```
 Y = A·K^α · L^(1-α)
-y = A·k^α          (人均形式)
+y = A·k^α          (per-capita form)
 ```
 
-资本积累方程:
+Capital accumulation equation:
 
 ```
 Δk = s·f(k) - (δ + n)·k
 ```
 
-稳态人均资本:
+Steady-state capital per worker:
 
 ```
 k* = [s·A / (δ + n)]^(1/(1-α))
 ```
 
-黄金律 (最大化稳态消费):
+Golden rule (maximum steady-state consumption):
 
 ```
 f'(k_gold) = δ + n
 s_gold = α
 ```
 
-收敛速度:
+Speed of convergence:
 
 ```
 λ = (1-α)·(δ+n)
 ```
 
-### 14. 货币创造 (Money Creation)
+### 14. Money Creation
 
 ```
-存款乘数 = 1 / 准备金率
-货币乘数 = 1 / (准备金率 + 现金持有率)
-货币供给 = 基础货币 × 货币乘数
+deposit_multiplier = 1 / reserve_ratio
+money_multiplier = 1 / (reserve_ratio + currency_deposit_ratio)
+money_supply = monetary_base × money_multiplier
 ```
 
-### 15. AD-AS 模型
+### 15. AD-AS Model
 
 ```
 AD:   Y = a - b·P
 SRAS: Y = c + d·P
-LRAS: Y = Y_potential (垂直)
+LRAS: Y = Y_potential (vertical)
 ```
 
-- 短期均衡: AD 与 SRAS 交点
-- 长期均衡: AD 与 LRAS 交点 (产出 = 潜在产出)
-- 产出缺口 = 实际产出 - 潜在产出
+- Short-run equilibrium: intersection of AD and SRAS
+- Long-run equilibrium: intersection of AD and LRAS (output = potential output)
+- Output gap = actual output - potential output
 
-### 16. 菲利普斯曲线 (Phillips Curve)
+### 16. Phillips Curve
 
 ```
 π = π^e - β·(u - u_n)
 ```
 
-- `π^e`: 预期通胀
-- `u_n`: 自然失业率
-- `β`: 权衡系数
+- `π^e`: expected inflation
+- `u_n`: natural rate of unemployment
+- `β`: tradeoff coefficient
 
-降低 1 个百分点通胀所需失业上升: `Δu = 1/β`
-牺牲率: `2/β`
+Unemployment increase needed to reduce inflation by 1 percentage point: `Δu = 1/β`
+Sacrifice ratio: `2/β`
 
-### 17. 消费者选择理论 (Consumer Choice)
+### 17. Consumer Choice Theory
 
-预算约束与柯布-道格拉斯效用:
+Budget constraint and Cobb-Douglas utility:
 
 ```
-Px·x + Py·y = I          (预算线)
-U(x, y) = x^α · y^(1-α)  (效用函数)
+Px·x + Py·y = I          (budget line)
+U(x, y) = x^α · y^(1-α)  (utility function)
 ```
 
-最大化效用的一阶条件 (相切条件):
+First-order condition for utility maximization (tangency condition):
 
 ```
 MRS = MUx / MUy = [α/(1-α)] · (y/x) = Px / Py
 ```
 
-解析解 (最优消费束):
+Analytical solution (optimal consumption bundle):
 
 ```
 x* = α·I / Px
 y* = (1-α)·I / Py
 ```
 
-- 需求曲线: 保持 I、Py、α 不变，x* 随 Px 变化
-- 恩格尔曲线: 保持价格不变，x* 随收入 I 变化
+- Demand curve: holding I, Py, and α constant, x* varies with Px
+- Engel curve: holding prices constant, x* varies with income I
 
-### 18. 博弈论 (Game Theory)
+### 18. Game Theory
 
-**纯策略纳什均衡**: 每个参与人给定对手策略下最优，无人有动机单方面偏离:
+**Pure-strategy Nash equilibrium**: each player is best-responding given the opponent's strategy, and no one has an incentive to deviate unilaterally:
 
 ```
 u_i(a_i*, a_{-i}*) ≥ u_i(a_i, a_{-i}*)  ∀a_i
 ```
 
-**混合策略纳什均衡**: 参与人按概率分布选择纯策略，使对手无差异。对 2×2 博弈，行玩家混合均衡概率:
+**Mixed-strategy Nash equilibrium**: players choose pure strategies according to a probability distribution that leaves the opponent indifferent. For a 2×2 game, the row player's mixed-equilibrium probability is:
 
 ```
 p = (d - c) / (a - b - c + d)
 ```
 
-其中 a、b、c、d 为列玩家收益矩阵元素。
+where a, b, c, d are elements of the column player's payoff matrix.
 
-**占优策略**: 无论对手如何行动都严格最优的策略；当双方都有占优策略时构成占优策略均衡。
+**Dominant strategy**: a strategy that is strictly optimal regardless of the opponent's action; when both players have a dominant strategy, this constitutes a dominant-strategy equilibrium.
 
-**帕累托最优**: 不存在使一方收益提高而另一方不下降的组合。
+**Pareto optimality**: there is no combination that raises one party's payoff without lowering the other's.
 
-**古诺寡头 (n 家对称企业)**: 市场需求 `P = a - b·Q`，边际成本 `c`:
-
-```
-最佳反应: q_i = (a - c - b·Σq_j) / (2b)
-纳什均衡: q* = (a - c) / (b·(n+1))
-均衡价格: P = (a + n·c) / (n+1)
-```
-
-- 串谋产出: 按垄断解 `Q_m = (a-c)/(2b)`
-- 完全竞争产出: `Q_c = (a-c)/b`
-
-### 19. 可贷资金市场 (Loanable Funds)
-
-储蓄供给与投资需求都是利率的函数:
+**Cournot oligopoly (n symmetric firms)**: market demand `P = a - b·Q`, marginal cost `c`:
 
 ```
-S(r) = S0 + S1·r   (供给向上倾斜)
-I(r) = I0 - I1·r   (需求向下倾斜)
+Best response: q_i = (a - c - b·Σq_j) / (2b)
+Nash equilibrium: q* = (a - c) / (b·(n+1))
+Equilibrium price: P = (a + n·c) / (n+1)
 ```
 
-均衡条件 (含政府借款):
+- Collusive output: monopoly solution `Q_m = (a-c)/(2b)`
+- Perfectly competitive output: `Q_c = (a-c)/b`
+
+### 19. Loanable Funds Market
+
+Both savings supply and investment demand are functions of the interest rate:
+
+```
+S(r) = S0 + S1·r   (upward-sloping supply)
+I(r) = I0 - I1·r   (downward-sloping demand)
+```
+
+Equilibrium condition (including government borrowing):
 
 ```
 S0 + S1·r = I0 - I1·r + G
 ```
 
-均衡利率:
+Equilibrium interest rate:
 
 ```
 r* = (I0 + G - S0) / (S1 + I1)
 ```
 
-**挤出效应**: 政府借款 `ΔG` 使需求右移，利率上升，私人投资下降:
+**Crowding-out effect**: government borrowing `ΔG` shifts demand right, raises the interest rate, and reduces private investment:
 
 ```
 ΔI = -I1·Δr < 0
 ```
 
-**税收激励**: 提高储蓄供给 `ΔS0`，利率下降，投资上升。
+**Tax incentive**: raising savings supply `ΔS0` lowers the interest rate and raises investment.
 
-### 20. IS-LM 模型
+### 20. IS-LM Model
 
-**IS 曲线** (商品市场均衡 `Y = C + I + G`):
+**IS curve** (goods market equilibrium `Y = C + I + G`):
 
 ```
 Y = [C0 + I0 + G - b·r] / [1 - c·(1 - t)]
 ```
 
-- `c`: 边际消费倾向
-- `t`: 税率
-- `b`: 投资对利率敏感度
-- 斜率: `-b/[1-c(1-t)]` (向下倾斜)
+- `c`: marginal propensity to consume
+- `t`: tax rate
+- `b`: sensitivity of investment to the interest rate
+- Slope: `-b/[1-c(1-t)]` (downward-sloping)
 
-**LM 曲线** (货币市场均衡 `M/P = L(Y, r)`)：
+**LM curve** (money market equilibrium `M/P = L(Y, r)`):
 
 ```
 M/P = k·Y - h·r
 ```
 
-- `k`: 货币需求收入敏感度
-- `h`: 货币需求利率敏感度
-- 斜率: `k/h` (向上倾斜)
+- `k`: sensitivity of money demand to income
+- `h`: sensitivity of money demand to the interest rate
+- Slope: `k/h` (upward-sloping)
 
-**联立均衡**:
+**Simultaneous equilibrium**:
 
 ```
 Y* = [ (M/P)·b + h·(C0+I0+G) ] / [ h·(1-c(1-t)) + b·k ]
 r* = [ k·(C0+I0+G) - (1-c(1-t))·(M/P) ] / [ h·(1-c(1-t)) + b·k ]
 ```
 
-**支出乘数** (无挤出):
+**Expenditure multiplier** (no crowding out):
 
 ```
 α = 1 / [1 - c·(1-t)]
 ```
 
-财政扩张 (`ΔG>0`) 同时推高产出与利率 (部分挤出投资)；货币扩张 (`ΔM>0`) 提高产出并降低利率。
+Fiscal expansion (`ΔG>0`) raises both output and the interest rate (partially crowding out investment); monetary expansion (`ΔM>0`) raises output and lowers the interest rate.
