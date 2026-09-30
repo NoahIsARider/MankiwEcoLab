@@ -10,6 +10,7 @@
   <img src="https://img.shields.io/github/actions/workflow/status/NoahIsARider/MankiwEcoLab/ci.yml?style=flat-square" alt="CI"/>
   <img src="https://img.shields.io/badge/pytest-280%20passed-brightgreen?style=flat-square" alt="Tests"/>
   <img src="https://img.shields.io/badge/PRs-welcome-orange?style=flat-square" alt="PRs Welcome"/>
+  <a href="https://mankiwecolab.readthedocs.io/en/latest/"><img src="https://readthedocs.org/projects/mankiwecolab/badge/?version=latest" alt="Documentation Status"/></a>
 </p>
 
 # Mankiw Economics Lab (Principles of Economics Simulation System)
@@ -17,6 +18,8 @@
 > **An interactive, code-first learning project based on Mankiw's *Principles of Economics*** — implement every core model of microeconomics and macroeconomics by hand in Python.
 
 This project takes the classic models in Mankiw's *Principles of Economics* textbook — from the "production possibilities frontier" to the "Phillips curve" — and **turns each one into runnable, experimentable, testable Python code**. Instead of just reading the graphs and formulas in a textbook, you can run the code, tweak parameters, and watch how markets converge and how the economy fluctuates.
+
+📖 **New here? Start with the [online documentation and step-by-step tutorials →](https://mankiwecolab.readthedocs.io/en/latest/)**
 
 ---
 
@@ -198,7 +201,7 @@ pytest tests/
 | Consumer choice and optimal bundle | Loanable funds market |
 | | IS-LM equilibrium |
 
-See [docs/](docs/) for detailed documentation.
+See [docs/](docs/) for detailed documentation, or read the [hosted docs on Read the Docs](https://mankiwecolab.readthedocs.io/en/latest/).
 
 ---
 
@@ -206,6 +209,7 @@ See [docs/](docs/) for detailed documentation.
 
 | Document | Description |
 |------|------|
+| [📖 Online docs & tutorials](https://mankiwecolab.readthedocs.io/en/latest/) | Full documentation site on Read the Docs — start here |
 | [docs/usage.md](docs/usage.md) | Usage guide and custom experiments |
 | [docs/structure.md](docs/structure.md) | Architecture and module descriptions |
 | [docs/tutorials/](docs/tutorials/) | Step-by-step tutorials for the ten principles |

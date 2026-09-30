@@ -10,6 +10,7 @@
   <img src="https://img.shields.io/github/actions/workflow/status/NoahIsARider/MankiwEcoLab/ci.yml?style=flat-square" alt="CI"/>
   <img src="https://img.shields.io/badge/pytest-280%20passed-brightgreen?style=flat-square" alt="Tests"/>
   <img src="https://img.shields.io/badge/PRs-welcome-orange?style=flat-square" alt="PRs Welcome"/>
+  <a href="https://mankiwecolab.readthedocs.io/en/latest/"><img src="https://readthedocs.org/projects/mankiwecolab/badge/?version=latest" alt="Documentation Status"/></a>
 </p>
 
 # 经济学原理模拟系统 (Mankiw Economics Lab)
@@ -19,6 +20,8 @@
 本项目把曼昆《经济学原理》教材中从"生产可能性边界"到"菲利普斯曲线"的经典模型，
 **逐一翻译为可运行、可实验、可测试的 Python 代码**。你不再只是阅读课本上的图形与公式，
 而是可以运行代码、调整参数、观察市场如何收敛、经济如何波动。
+
+📖 **新手从这里开始：[在线阅读文档与分步教程 →](https://mankiwecolab.readthedocs.io/en/latest/)**
 
 ---
 
@@ -210,7 +213,7 @@ pytest tests/
 | 消费者选择与最优组合 | 可贷资金市场 |
 | | IS-LM 均衡 |
 
-所有图表均支持中文标注，详细文档见 [docs/](docs/)。
+所有图表均支持中文标注，详细文档见 [docs/](docs/)，或直接看 [Read the Docs 在线文档](https://mankiwecolab.readthedocs.io/en/latest/)。
 
 ---
 
@@ -218,6 +221,7 @@ pytest tests/
 
 | 文档 | 说明 |
 |------|------|
+| [📖 在线文档与教程](https://mankiwecolab.readthedocs.io/en/latest/) | Read the Docs 在线文档站（英文）· 建议从这里开始 |
 | [docs/usage.md](docs/usage.md) | 使用指南与自定义实验 |
 | [docs/structure.md](docs/structure.md) | 架构与模块说明 |
 | [docs/tutorials/](docs/tutorials/) | 十大原理分步教程 |
