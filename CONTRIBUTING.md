@@ -54,8 +54,12 @@ If you add a model or change behaviour, update:
 
 - `docs/models.md` — the mathematical formulation
 - `docs/api.md` — the public API reference
-- `STRUCTURE.md` — the module tree
+- `docs/structure.md` — the module tree
+- `docs/verification.md` — the acceptance report, after a full run
 - `README.md` — the feature list, if the change is user-facing
+
+The docs site is built with MkDocs (`mkdocs.yml`) and hosted on Read the Docs.
+To preview it locally: `pip install -r docs/requirements.txt && mkdocs serve`.
 
 ### 6. Open a Pull Request
 

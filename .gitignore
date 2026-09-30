@@ -58,3 +58,6 @@ htmlcov/
 
 # Distribution
 *.tar.gz
+
+# MkDocs build output
+site/

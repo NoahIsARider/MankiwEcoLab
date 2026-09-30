@@ -1,13 +1,13 @@
 # 项目结构
 
 ```
-PrinciplesOfEconomy/
+MankiwEcoLab/
 │
 ├── README.md                    # 项目概览与徽章
-├── USAGE.md                     # 使用指南
-├── STRUCTURE.md                 # 本文档（项目结构）
+├── CONTRIBUTING.md              # 贡献指南
 ├── requirements.txt             # Python 依赖包列表
 ├── pyproject.toml               # 包配置（ruff、pytest、setuptools）
+├── mkdocs.yml                   # 文档站配置（Read the Docs / MkDocs）
 ├── LICENSE                      # MIT 许可证
 ├── .gitignore                   # Git 忽略文件
 ├── config.py                    # 全部可配置参数
@@ -67,8 +67,11 @@ PrinciplesOfEconomy/
 │   ├── test_loanable_funds.py
 │   └── test_islm.py
 │
-├── docs/                        # 文档
+├── docs/                        # 文档（Read the Docs / MkDocs）
 │   ├── index.md                 # 文档索引
+│   ├── usage.md                 # 使用指南
+│   ├── structure.md             # 项目结构（本文档）
+│   ├── verification.md          # 系统验收报告
 │   ├── models.md                # 数学模型与推导
 │   ├── api.md                   # API 参考
 │   └── tutorials/               # 分主题教程（5 篇）

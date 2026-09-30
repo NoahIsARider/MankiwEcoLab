@@ -32,7 +32,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/NoahIsARider/MankiwEcoLab"
 Repository = "https://github.com/NoahIsARider/MankiwEcoLab"
-Documentation = "https://github.com/NoahIsARider/MankiwEcoLab/blob/master/USAGE.md"
+Documentation = "https://mankiwecolab.readthedocs.io/"
 
 [project.optional-dependencies]
 test = [

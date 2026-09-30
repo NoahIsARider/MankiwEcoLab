@@ -206,12 +206,12 @@ See [docs/](docs/) for detailed documentation.
 
 | Document | Description |
 |------|------|
-| [USAGE.md](USAGE.md) | Usage guide and custom experiments |
-| [STRUCTURE.md](STRUCTURE.md) | Architecture and module descriptions |
+| [docs/usage.md](docs/usage.md) | Usage guide and custom experiments |
+| [docs/structure.md](docs/structure.md) | Architecture and module descriptions |
 | [docs/tutorials/](docs/tutorials/) | Step-by-step tutorials for the ten principles |
 | [docs/models.md](docs/models.md) | All mathematical models and formula derivations |
 | [docs/api.md](docs/api.md) | API reference |
-| [VERIFICATION.md](VERIFICATION.md) | System acceptance report (full verification) |
+| [docs/verification.md](docs/verification.md) | System acceptance report (full verification) |
 
 ---
 

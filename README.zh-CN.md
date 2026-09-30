@@ -218,12 +218,12 @@ pytest tests/
 
 | 文档 | 说明 |
 |------|------|
-| [USAGE.md](USAGE.md) | 使用指南与自定义实验 |
-| [STRUCTURE.md](STRUCTURE.md) | 架构与模块说明 |
+| [docs/usage.md](docs/usage.md) | 使用指南与自定义实验 |
+| [docs/structure.md](docs/structure.md) | 架构与模块说明 |
 | [docs/tutorials/](docs/tutorials/) | 十大原理分步教程 |
 | [docs/models.md](docs/models.md) | 全部数学模型与公式推导 |
 | [docs/api.md](docs/api.md) | API 参考 |
-| [VERIFICATION.md](VERIFICATION.md) | 系统验收报告（全量验证） |
+| [docs/verification.md](docs/verification.md) | 系统验收报告（全量验证） |
 
 ---
 

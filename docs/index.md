@@ -1,19 +1,26 @@
 # 文档索引
 
-本目录包含曼昆《经济学原理》代码学习项目的全部文档。
+曼昆《经济学原理》代码学习项目的全部文档。
 
 ## 快速导航
 
 | 文档 | 说明 |
 |------|------|
+| [usage.md](usage.md) | 运行方式、CLI 入口与自定义实验 |
 | [models.md](models.md) | 全部数学模型与公式推导 |
 | [api.md](api.md) | API 参考手册 |
-| [../VERIFICATION.md](../VERIFICATION.md) | 系统验收报告（全量验证） |
-| [tutorials/01-supply-demand.md](tutorials/01-supply-demand.md) | 教程：供需均衡 |
-| [tutorials/02-elasticity.md](tutorials/02-elasticity.md) | 教程：价格弹性 |
-| [tutorials/03-market-structure.md](tutorials/03-market-structure.md) | 教程：市场结构 |
-| [tutorials/04-externality.md](tutorials/04-externality.md) | 教程：外部性与市场失灵 |
-| [tutorials/05-macro-overview.md](tutorials/05-macro-overview.md) | 教程：宏观经济学导览 |
+| [structure.md](structure.md) | 项目结构与模块说明 |
+| [verification.md](verification.md) | 系统验收报告（全量验证） |
+
+## 教程
+
+| 教程 | 主题 |
+|------|------|
+| [tutorials/01-supply-demand.md](tutorials/01-supply-demand.md) | 供需均衡 |
+| [tutorials/02-elasticity.md](tutorials/02-elasticity.md) | 价格弹性 |
+| [tutorials/03-market-structure.md](tutorials/03-market-structure.md) | 市场结构 |
+| [tutorials/04-externality.md](tutorials/04-externality.md) | 外部性与市场失灵 |
+| [tutorials/05-macro-overview.md](tutorials/05-macro-overview.md) | 宏观经济学导览 |
 
 ## 学习路径
 

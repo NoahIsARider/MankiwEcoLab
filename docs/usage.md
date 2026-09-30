@@ -359,9 +359,9 @@ market_data.plot(x='轮次', y=['价格', '交易量'])
 
 ## 文档导航
 
-- README.md - 项目概述
-- STRUCTURE.md - 项目结构与数据流
-- docs/index.md - 文档索引
-- docs/models.md - 数学模型与推导
-- docs/api.md - API 参考
-- docs/tutorials/ - 分主题教程
+- [index.md](index.md) - 文档索引
+- [models.md](models.md) - 数学模型与推导
+- [api.md](api.md) - API 参考
+- [structure.md](structure.md) - 项目结构与数据流
+- [verification.md](verification.md) - 系统验收报告
+- [tutorials/01-supply-demand.md](tutorials/01-supply-demand.md) - 分主题教程（共 5 篇）
